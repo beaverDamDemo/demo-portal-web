@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { Theme, ThemeService } from './services/theme-service';
+import { AuthService } from './services/auth';
 
 @Component({
   selector: 'app-root',
@@ -16,10 +17,22 @@ export class App implements OnInit {
   protected readonly title = signal('web-demo-portal');
   currentTheme: Theme = 'light';
   private readonly themeService = inject(ThemeService);
+  public readonly authService = inject(AuthService);
 
   ngOnInit() {
     this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
+    });
+
+    this.authService.get().subscribe({
+      next: (res) => {
+        this.authService.currentUserSig.set(res);
+        console.log("🎉 ~ AppComponent ~ this.authService.get ~ res:", res);
+      },
+      error: (e: Error) => {
+        console.log("🎉 ~ AppComponent ~ this.authService.get ~ e:", e);
+        this.authService.currentUserSig.set(null);
+      }
     });
   }
 
