@@ -1,7 +1,7 @@
 <div class="min-h-screen flex flex-col">
   <header>
     <mat-toolbar color="primary" class="h-16 flex justify-between items-center px-4 shadow-md">
-      <span class="text-lg font-semibold">My Demo App</span>
+      <a routerLink="/" class="text-lg font-semibold">My Demo App</a>
       <div class="flex items-center gap-2">
         @if (authService.currentUserSig() === null) {
         <button mat-flat-button routerLink="/login">Login</button>
