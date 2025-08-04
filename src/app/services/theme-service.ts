@@ -1,4 +1,4 @@
-import { DOCUMENT, inject, Injectable, signal } from '@angular/core';
+import { DOCUMENT, inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export type Theme = 'light' | 'dark';

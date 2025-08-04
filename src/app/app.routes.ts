@@ -13,6 +13,10 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'pilot-tower-sockets',
+    loadComponent: () => import('./pages/pilot-tower-sockets/pilot-tower-sockets').then((m) => m.PilotTowerSockets),
+  },
+  {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
     canActivate: [AuthGuard],

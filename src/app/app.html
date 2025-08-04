@@ -3,6 +3,7 @@
     <mat-toolbar color="primary" class="h-16 flex justify-between items-center px-4 shadow-md">
       <a routerLink="/" class="text-lg font-semibold">My Demo App</a>
       <div class="flex items-center gap-2">
+        <button mat-stroked-button routerLink="/pilot-tower-sockets">Socket example</button>
         @if (authService.currentUserSig() === null) {
         <button mat-flat-button routerLink="/login">Login</button>
         } @else if (authService.currentUserSig()) {
