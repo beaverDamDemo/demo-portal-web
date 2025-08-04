@@ -20,7 +20,6 @@ export class PilotTowerService {
   sendMessage(msg: string): Observable<ResponseMessage> {
     return new Observable((observer) => {
       this.socket?.emit('messageFromBrowser', msg, (response: ResponseMessage) => {
-        console.log("\x1b[32m✅ API Response:\x1b[0m", response);
         observer.next(response);
         observer.complete();
       });

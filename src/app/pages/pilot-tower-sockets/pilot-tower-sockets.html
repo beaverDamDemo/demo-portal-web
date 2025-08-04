@@ -18,10 +18,11 @@
     </button>
     }
 </div>
-@if (responseSig()) {
+@for (item of responseSig(); track $index) {
 <p>
-  <span class="response-time">{{responseSig()?.time}}:</span>
-  <span class="response-status">[{{responseSig()?.status}}]:</span>
-  <span class="response-text">{{responseSig()?.text}}</span>
+  <span class="response-time">{{item.time}}:</span>
+  <span class="response-status">[{{item.status}}]:</span>
+  <span class="response-text">{{item.text}}</span>
+  <span class="response-status response-text">{{item.id}}</span>
 </p>
 }

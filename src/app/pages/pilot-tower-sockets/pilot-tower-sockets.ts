@@ -2,16 +2,18 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { MatButtonModule } from '@angular/material/button';
 import { PilotTowerService } from '../../services/pilot-tower-service';
 import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 export type ResponseMessage = {
   time: string;
   status: string,
   text: string,
+  id: string,
 };
 
 @Component({
   selector: 'app-pilot-tower-sockets',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, CommonModule],
   templateUrl: './pilot-tower-sockets.html',
   styleUrl: './pilot-tower-sockets.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +41,7 @@ export class PilotTowerSockets implements OnInit {
   private sub: Subscription | null = null;
   currentIndex = 0;
   isConnected: boolean = false;
-  responseSig = signal<ResponseMessage | undefined>(undefined);
+  responseSig = signal<ResponseMessage[]>([]);
 
   ngOnInit(): void {
     this.pilotTowerService.connect();
@@ -66,8 +68,24 @@ export class PilotTowerSockets implements OnInit {
   sendMessage() {
     if (this.currentIndex < this.pilotTowerSequence.length) {
       this.pilotTowerService.sendMessage(this.pilotTowerSequence[this.currentIndex]).subscribe(res => {
-        this.responseSig.set(res);
+        this.responseSig.update((messages) => [
+          ...messages,
+          {
+            text: res.text,
+            time: res.time,
+            status: res.status,
+            id: res.id
+          }
+        ]);
+
+        setTimeout(() => {
+          const updatedMessages = this.responseSig().filter((_, index, arr) => {
+            return index === arr.length - 1;
+          });
+          this.responseSig.set(updatedMessages);
+        }, 9000);
       });
+
       this.currentIndex++;
     }
   }
