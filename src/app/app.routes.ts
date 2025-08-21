@@ -9,6 +9,10 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'cars',
+    loadComponent: () => import('./pages/cars/cars').then((m) => m.Cars),
+  },
+  {
     path: 'login',
     component: LoginComponent,
   },
@@ -20,6 +24,10 @@ export const routes: Routes = [
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'todos',
+    loadComponent: () => import('./pages/todos-component/todos-component').then((m) => m.TodosComponent),
   },
   {
     path: '**',

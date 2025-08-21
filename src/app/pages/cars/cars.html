@@ -1,0 +1,116 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">🚗 Car Inventory</h2>
+
+  <div class="flex items-center gap-4">
+    <mat-form-field appearance="outline" class="w-48">
+      <mat-label>Car ID</mat-label>
+      <input matInput type="number" [(ngModel)]="carIdToLoad">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="loadCarById()">Load Car</button>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <mat-form-field appearance="outline" class="w-64">
+      <mat-label>Brand</mat-label>
+      <input matInput [(ngModel)]="brandFilter">
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="filterByBrand()">Filter by Brand</button>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <mat-form-field appearance="outline" class="w-32">
+      <mat-label>Min Price</mat-label>
+      <input matInput type="number" [(ngModel)]="minPrice">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="w-32">
+      <mat-label>Max Price</mat-label>
+      <input matInput type="number" [(ngModel)]="maxPrice">
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="filterByPrice()">Filter by Price</button>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <mat-form-field appearance="outline" class="w-48">
+      <mat-label>Min Power (PS)</mat-label>
+      <input matInput type="number" [(ngModel)]="powerFilter">
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="filterByPower()">Filter by Power</button>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <mat-form-field appearance="outline" class="w-48">
+      <mat-label>Wheel Drive</mat-label>
+      <input matInput [(ngModel)]="wheelDriveFilter">
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="filterByDrive()">Filter by Drive</button>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <mat-form-field appearance="outline" class="w-48">
+      <mat-label>Min Seats</mat-label>
+      <input matInput type="number" [(ngModel)]="minSeats">
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="filterBySeats()">Filter by Seats</button>
+  </div>
+
+  <div class="grid grid-cols-4 gap-4">
+    <mat-form-field appearance="outline">
+      <mat-label>Brand</mat-label>
+      <input matInput [(ngModel)]="advancedBrand">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Fuel Type</mat-label>
+      <input matInput [(ngModel)]="advancedFuel">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Min Price</mat-label>
+      <input matInput type="number" [(ngModel)]="advancedMinPrice">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Max Price</mat-label>
+      <input matInput type="number" [(ngModel)]="advancedMaxPrice">
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" (click)="advancedFilter()">Apply Advanced Filter</button>
+
+  <button mat-stroked-button color="primary" (click)="loadAllCars()">Reload All Cars</button>
+
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
+    @for (car of cars; track $index) {
+    <mat-card class="relative shadow-md hover:shadow-lg transition-shadow duration-300 p-4">
+
+      <mat-card-header class="flex justify-between items-start">
+        <div>
+          <mat-card-title class="text-base font-semibold text-blue-700">
+            {{ car.brand }} {{ car.model }} ({{ car.yearOfIntroduction }})
+          </mat-card-title>
+          <mat-card-subtitle class="text-xs text-gray-500">
+            ID: {{ car.id }}
+          </mat-card-subtitle>
+        </div>
+
+        <button mat-icon-button color="warn" class="mt-1" (click)="car.id !== undefined && deleteCar(car.id)"
+          matTooltip="Delete this car">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content class="grid grid-cols-1 gap-2 text-xs text-gray-700 dark:text-gray-200">
+        <div><strong>Price:</strong> €{{ car.price }}</div>
+        <div><strong>Engine:</strong> {{ car.ccm }}cc, {{ car.cyl }} cyl</div>
+        <div><strong>Fuel:</strong> {{ car.fuelType | uppercase }}</div>
+        <div><strong>Power:</strong> {{ car.powerPs }} PS @ {{ car.powerRpm }} RPM</div>
+        <div><strong>Torque:</strong> {{ car.torqueKgm }} kg·m @ {{ car.torqueRpm }} RPM</div>
+        <div><strong>Drive:</strong> {{ car.wheelDrive | uppercase }}</div>
+        <div><strong>Weight:</strong> {{ car.weightKg }} kg</div>
+        <div><strong>Seats:</strong> {{ car.numberSeats }}</div>
+        <div><strong>Top Speed:</strong> {{ car.kmh }} km/h</div>
+        <div><strong>0–100 km/h:</strong> {{ car.acceleration0To100 }} sec</div>
+        <div><strong>Efficiency:</strong> {{ car.fuelConsumptionKmPerL }} km/L</div>
+        <div><strong>CO₂:</strong> {{ car.co2Emission }} g/km</div>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+</div>

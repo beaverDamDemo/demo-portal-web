@@ -1,0 +1,41 @@
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-semibold mb-4 text-center">📝 Todo List</h2>
+
+  <form (submit)="addTodo(); $event.preventDefault()" class="flex gap-4 mb-6">
+    <mat-form-field class="flex-1" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="newTodo.name" name="name" required />
+    </mat-form-field>
+
+    <mat-form-field class="flex-1" appearance="outline">
+      <mat-label>Description</mat-label>
+      <input matInput [(ngModel)]="newTodo.description" name="description" required />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Add</button>
+  </form>
+
+  <mat-list>
+    @for (todo of todos; track $index) {
+    <mat-list-item class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+      <mat-form-field class="flex-1" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="todo.name" (blur)="updateTodo(todo)" />
+      </mat-form-field>
+
+      <mat-form-field class="flex-1" appearance="outline">
+        <mat-label>Description</mat-label>
+        <input matInput [(ngModel)]="todo.description" (blur)="updateTodo(todo)" />
+      </mat-form-field>
+
+      <mat-checkbox [(ngModel)]="todo.completed" (change)="updateTodo(todo)">
+        Completed
+      </mat-checkbox>
+
+      <button mat-icon-button color="warn" (click)="deleteTodo(todo.id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+    }
+  </mat-list>
+</div>
