@@ -29,11 +29,6 @@ body {
   }
 }
 
-.error {
-  color: #ff450088;
-  font-size: 11px;
-}
-
 .wrapper {
   position: absolute;
   top: 50%;
@@ -89,106 +84,117 @@ body {
   .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 80px 0;
-    height: 400px;
+    height: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    h1 {
-      font-size: 40px;
-      transition-duration: 1s;
-      transition-timing-function: ease-in-put;
-      font-weight: 200;
-      color: #fff;
-    }
-
-    form {
-      padding: 20px 0;
-      position: relative;
-      z-index: 2;
-
-      input {
-        display: block;
-        appearance: none;
-        outline: 0;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        background-color: rgba(255, 255, 255, 0.2);
-        width: 250px;
-        border-radius: 3px;
-        padding: 10px 15px;
-        margin: 0 auto 10px auto;
-        display: block;
-        text-align: center;
-        font-size: 18px;
-        color: white;
-        transition-duration: 0.25s;
-        font-weight: 300;
-
-        &:hover {
-          background-color: #fff3;
-        }
-
-        &:focus {
-          color: #fff;
-          background-color: #fff4;
-          width: 300px;
-        }
-
-        &.invalid {
-          background-color: #ff450007;
-          border-color: #ff450055;
-          color: #ff450088;
-        }
-      }
-
-      button {
-        appearance: none;
-        outline: 0;
-        background-color: white;
-        border: 0;
-        padding: 10px 15px;
-        border-radius: 3px;
-        width: 250px;
-        cursor: pointer;
-        font-size: 18px;
-        transition-duration: 0.25s;
-
-        &:hover {
-          background-color: rgb(245, 247, 249);
-        }
-
-        &[disabled] {
-          pointer-events: none;
-        }
-      }
-    }
-
-    #show-password {
-      position: absolute;
-      width: 24px;
-      height: 41px;
-      right: 176px;
-      top: 1px;
+    .container-inner {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      background: #fff0;
+      align-items: center;
 
-      mat-icon {
-        position: absolute;
-        width: 100%;
+      h1 {
+        font-size: 40px;
+        transition-duration: 1s;
+        transition-timing-function: ease-in-put;
+        font-weight: 200;
         color: #fff;
       }
-    }
 
-    .isPasswordFocused {
-      #show-password {
-        right: 151px;
+      form {
+        padding: 20px 0;
+        position: relative;
+        z-index: 2;
+
+        input {
+          display: block;
+          appearance: none;
+          outline: 0;
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          background-color: rgba(255, 255, 255, 0.2);
+          width: 250px;
+          border-radius: 3px;
+          padding: 10px 15px;
+          margin: 0 auto 10px auto;
+          display: block;
+          text-align: center;
+          font-size: 18px;
+          color: white;
+          transition-duration: 0.25s;
+          font-weight: 300;
+
+          &:hover {
+            background-color: #fff3;
+          }
+
+          &:focus {
+            color: #fff;
+            background-color: #fff4;
+            width: 300px;
+          }
+
+          &.invalid {
+            background-color: #ff450007;
+            border-color: #ff450055;
+            color: #ff450088;
+          }
+        }
+
+        button {
+          appearance: none;
+          outline: 0;
+          background-color: #fff;
+          border: 0;
+          padding: 10px 15px;
+          border-radius: 3px;
+          width: 250px;
+          cursor: pointer;
+          font-size: 18px;
+          transition-duration: 0.25s;
+
+          &:hover {
+            background-color: rgb(245, 247, 249);
+          }
+
+          &[disabled] {
+            pointer-events: none;
+          }
+        }
+
+        .error {
+          color: #ff450088;
+          font-size: 11px;
+          margin-top: -7px;
+          margin-bottom: 12px;
+          text-align: left;
+        }
       }
-    }
 
-    .invalid #show-password {
-      mat-icon {
-        color: #ff450088;
+      #show-password {
+        position: absolute;
+        width: 24px;
+        height: 41px;
+        right: 0px;
+        top: 1px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff0;
+
+        mat-icon {
+          position: absolute;
+          width: 100%;
+          color: #fff;
+        }
+      }
+
+      .invalid #show-password {
+        mat-icon {
+          color: #ff450088;
+        }
       }
     }
   }
