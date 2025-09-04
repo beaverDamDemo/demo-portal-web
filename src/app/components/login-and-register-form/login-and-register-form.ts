@@ -2,10 +2,14 @@ import { Component, effect, OnInit, ChangeDetectionStrategy, Input, Output, Even
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login-and-register-form',
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatInputModule, MatFormFieldModule],
   templateUrl: './login-and-register-form.html',
   styleUrl: './login-and-register-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,6 +17,8 @@ import { AuthService } from '../../services/auth';
 export class LoginAndRegisterForm implements OnInit {
   authForm!: FormGroup;
   isSubmitted = false;
+  showPassword: boolean = false;
+  isPasswordFocused: boolean = false;
   // optionalRoles = [
   //   { id: 1, name: 'Admin', value: 'admin' },
   //   { id: 2, name: 'User', value: 'user' },
@@ -85,6 +91,10 @@ export class LoginAndRegisterForm implements OnInit {
     //   }
     // });
   };
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     this.formSubmit.emit(this.authForm.value);
