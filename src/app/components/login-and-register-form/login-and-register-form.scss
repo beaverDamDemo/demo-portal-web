@@ -65,17 +65,18 @@
       justify-content: center;
       align-items: center;
 
-      h1 {
-        font-size: 40px;
-        transition-duration: 1s;
-        transition-timing-function: ease-in-put;
-        color: #fff;
-      }
-
       form {
-        padding: 20px 0;
         position: relative;
         z-index: 2;
+
+        h1 {
+          font-size: 40px;
+          transition-duration: 1s;
+          transition-timing-function: ease-in-put;
+          color: #fff;
+          margin-top: 5px;
+          margin-bottom: 30px;
+        }
 
         input {
           display: block;
