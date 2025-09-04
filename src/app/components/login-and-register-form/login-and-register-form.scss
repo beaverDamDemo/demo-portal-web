@@ -161,6 +161,36 @@ body {
         }
       }
     }
+
+    #show-password {
+      position: absolute;
+      width: 24px;
+      height: 41px;
+      right: 176px;
+      top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff0;
+
+      mat-icon {
+        position: absolute;
+        width: 100%;
+        color: #fff;
+      }
+    }
+
+    .isPasswordFocused {
+      #show-password {
+        right: 151px;
+      }
+    }
+
+    .invalid #show-password {
+      mat-icon {
+        color: #ff450088;
+      }
+    }
   }
 }
 
