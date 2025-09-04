@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,6 +18,9 @@ export class App implements OnInit {
   currentTheme: Theme = 'light';
   private readonly themeService = inject(ThemeService);
   public readonly authService = inject(AuthService);
+  currentYear = new Date().getFullYear();
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.themeService.theme$.subscribe(theme => {
@@ -38,5 +41,9 @@ export class App implements OnInit {
 
   toggleTheme() {
     this.themeService.toggleTheme();
+  }
+
+  isActive(url: string): boolean {
+    return this.router.url === url;
   }
 }
