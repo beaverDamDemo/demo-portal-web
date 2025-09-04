@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserAuthInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth';
 import { LoginAndRegisterForm } from "../../components/login-and-register-form/login-and-register-form";
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [LoginAndRegisterForm],
-  templateUrl: './login.html',
-  styleUrl: './login.scss',
+  templateUrl: './register.html',
+  styleUrl: './register.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   isSubmitted: boolean = false;
 
   constructor(
@@ -27,18 +28,18 @@ export class LoginComponent implements OnInit {
   onFormSubmit(credentials: any) {
     console.log("Form submitted:", credentials);
     this.authService
-      .login(credentials)
+      .register(credentials)
       .subscribe({
         next: (res: UserAuthInterface) => {
           localStorage.setItem('token', res.token);
           this.authService.currentUserSig.set(res.username);
           this.authService.SetState(res.username);
-          console.log('Login successful', res);
-          console.log("LoginComponent Navigating to profile");
+          console.log('Register successful', res);
+          console.log("RegisterComponent Navigating to profile");
           this.router.navigate(['/profile']);
         },
         error: (err) => {
-          console.error('Login failed', err);
+          console.error('Register failed', err);
         },
       });
     this.isSubmitted = true;

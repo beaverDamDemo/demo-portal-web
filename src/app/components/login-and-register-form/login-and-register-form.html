@@ -1,0 +1,69 @@
+<div class="wrapper" [class.login]="mode === 'login'" [class.register]="mode === 'register'">>
+  <div class="container">
+    <h1 class="mb-4">{{ mode === 'login' ? 'Login' : 'Register' }}</h1>
+    <form (ngSubmit)="onSubmit()" class="form" [formGroup]="authForm">
+      <input type="text" placeholder="email" formControlName="email" required [class.invalid]="
+          authForm.get('email')?.invalid &&
+          (authForm.get('email')?.dirty ||
+            authForm.get('email')?.touched ||
+            isSubmitted)
+        " />
+      @if (authForm.get('email')?.hasError('required') &&
+      (authForm.get('email')?.dirty || authForm.get('email')?.touched ||
+      isSubmitted)) {
+      <div class="error">This field is required</div>
+      }
+
+      <input type="password" placeholder="password" formControlName="password" required [class.invalid]="
+          authForm.get('password')?.invalid &&
+          (authForm.get('password')?.dirty ||
+            authForm.get('password')?.touched ||
+            isSubmitted)
+        " />
+      @if (authForm.get('password')?.hasError('required') &&
+      (authForm.get('password')?.dirty || authForm.get('password')?.touched ||
+      isSubmitted)) {
+      <div class="error">This field is required</div>
+      }
+      @if (mode === 'register') {
+      <input type="password" placeholder="confirm password" formControlName="confirmPassword" required [class.invalid]="
+          authForm.get('confirmPassword')?.invalid &&
+          (authForm.get('confirmPassword')?.dirty ||
+            authForm.get('confirmPassword')?.touched ||
+            isSubmitted)
+        " />
+      @if (authForm.get('confirmPassword')?.hasError('required') &&
+      (authForm.get('confirmPassword')?.dirty || authForm.get('confirmPassword')?.touched ||
+      isSubmitted)) {
+      <div class="error">This field is required</div>
+      }
+      }
+
+      <!-- <div>
+        <select formControlName="optionalRoleId" required>
+          <option value="" disabled selected>Select your role</option>
+          @for (role of optionalRoles; track $index) {
+          <option [ngValue]="role.id">{{ role.name }}</option>
+          }
+        </select>
+      </div> -->
+
+      <button type="submit" id="login-button" [disabled]="authService.currentUserSig() !== null">
+        {{ mode === 'login' ? 'Login' : 'Register' }}
+      </button>
+    </form>
+  </div>
+
+  <ul class="bg-bubbles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</div>

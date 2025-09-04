@@ -8,6 +8,7 @@
         <button mat-stroked-button routerLink="/todos">Todos</button>
         @if (authService.currentUserSig() === null) {
         <button mat-flat-button routerLink="/login">Login</button>
+        <button mat-flat-button routerLink="/register">Register</button>
         } @else if (authService.currentUserSig()) {
         <button mat-stroked-button routerLink="/profile">{{authService.currentUserSig()}}'s Profile</button>
         <button mat-stroked-button (click)="authService.logout()">Logout</button>

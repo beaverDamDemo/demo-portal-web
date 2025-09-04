@@ -23,7 +23,7 @@ function generateEnv(envPath, dotenvPath, production) {
     try {
       fs.copyFileSync(envPath, targetFile);
       console.log(
-        colors.bgBlue(
+        colors.bgGreen(
           `Environment file copied from ${envPath} to ${targetFile}`
         )
       );

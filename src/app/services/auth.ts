@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserAuthInterface, UserInterface } from '../interfaces/user.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthFormValue } from '../interfaces/authFormValue.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +18,20 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  login(loginFormValue: any, invalid: boolean) {
-    const { email, password } = loginFormValue;
+  private authRequest(path: string, authFormValue: any) {
+    const { email, password } = authFormValue;
     return this.http.post<UserAuthInterface>(
-      `${this.API_URL}/auth/login`,
+      `${this.API_URL}/auth/${path}`,
       { email, password }
     );
+  }
+
+  login(authFormValue: AuthFormValue) {
+    return this.authRequest('login', authFormValue);
+  }
+
+  register(authFormValue: AuthFormValue) {
+    return this.authRequest('register', authFormValue);
   }
 
   logout(): void {
