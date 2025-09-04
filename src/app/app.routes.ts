@@ -28,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'todos',
     loadComponent: () => import('./pages/todos-component/todos-component').then((m) => m.TodosComponent),
+    canActivate: [AuthGuard],
   },
   {
     path: '**',

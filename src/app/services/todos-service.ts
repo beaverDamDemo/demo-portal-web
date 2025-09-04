@@ -12,7 +12,7 @@ export class TodosService {
   constructor(private http: HttpClient) { }
 
   findAllTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.baseUrl);
+    return this.http.get<Todo[]>(`${this.baseUrl}/user`);
   }
 
   getTodoById(id: number): Observable<Todo> {
@@ -20,14 +20,14 @@ export class TodosService {
   }
 
   createTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.baseUrl, todo);
+    return this.http.post<Todo>(`${this.baseUrl}/user`, todo);
   }
 
   updateTodo(id: number, updatedTodo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.baseUrl}/${id}`, updatedTodo);
+    return this.http.put<Todo>(`${this.baseUrl}/user/${id}`, updatedTodo);
   }
 
   deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/user/${id}`);
   }
 }

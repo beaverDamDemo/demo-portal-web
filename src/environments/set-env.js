@@ -11,6 +11,7 @@ function generateEnv(envPath, dotenvPath, production) {
     LUFTHANSA_CLIENT_SECRET: '${process.env["LUFTHANSA_CLIENT_SECRET"]}',
     API_NINJAS_API_KEY: '${process.env["API_NINJAS_API_KEY"]}',
     AVIATION_STACK_API_KEY: '${process.env["AVIATION_STACK_API_KEY"]}',
+    API_URL: '${process.env["API_URL"]}',
     appVersion: '${appVersion}',
     production: ${production},
   };`;

@@ -1,9 +1,9 @@
 export interface UserInterface {
   id: number;
-  username: string;
+  email: string;
 }
 
 export interface UserAuthInterface {
   token: string;
-  user: UserInterface;
+  username: UserInterface;
 }

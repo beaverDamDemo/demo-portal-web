@@ -2,14 +2,14 @@
   <div class="container">
     <h1 class="mb-4">Login</h1>
     <form (ngSubmit)="onSubmit()" class="form" [formGroup]="loginForm">
-      <input type="text" placeholder="Username" formControlName="username" required [class.invalid]="
-          loginForm.get('username')?.invalid &&
-          (loginForm.get('username')?.dirty ||
-            loginForm.get('username')?.touched ||
+      <input type="text" placeholder="email" formControlName="email" required [class.invalid]="
+          loginForm.get('email')?.invalid &&
+          (loginForm.get('email')?.dirty ||
+            loginForm.get('email')?.touched ||
             isSubmitted)
         " />
-      @if (loginForm.get('username')?.hasError('required') &&
-      (loginForm.get('username')?.dirty || loginForm.get('username')?.touched ||
+      @if (loginForm.get('email')?.hasError('required') &&
+      (loginForm.get('email')?.dirty || loginForm.get('email')?.touched ||
       isSubmitted)) {
       <div class="error">This field is required</div>
       }

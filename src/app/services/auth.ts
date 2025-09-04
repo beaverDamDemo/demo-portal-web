@@ -3,6 +3,7 @@ import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserAuthInterface, UserInterface } from '../interfaces/user.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,15 @@ export class AuthService {
   private stateItem: BehaviorSubject<any | null> = new BehaviorSubject(null);
   stateItem$: Observable<any | null> = this.stateItem.asObservable();
 
+  private API_URL = environment.API_URL;
+
   constructor(private http: HttpClient, private router: Router) { }
 
   login(loginFormValue: any, invalid: boolean) {
-    const { username, password } = loginFormValue;
+    const { email, password } = loginFormValue;
     return this.http.post<UserAuthInterface>(
-      'http://localhost:3000/auth/login',
-      { username, password }
+      `${this.API_URL}/auth/login`,
+      { email, password }
     );
   }
 
@@ -29,7 +32,7 @@ export class AuthService {
   }
 
   get(): Observable<UserInterface | null> {
-    return this.http.get<UserInterface>('http://localhost:3000/auth/user');
+    return this.http.get<UserInterface>(`${this.API_URL}/auth/profile`);
   }
 
   isLoggedIn(): boolean {
@@ -40,6 +43,7 @@ export class AuthService {
   SetState(item: any) {
     this.stateItem.next(item);
   }
+
   RemoveState() {
     this.stateItem.next(null);
   }

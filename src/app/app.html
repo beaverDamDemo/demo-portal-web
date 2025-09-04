@@ -9,8 +9,8 @@
         @if (authService.currentUserSig() === null) {
         <button mat-flat-button routerLink="/login">Login</button>
         } @else if (authService.currentUserSig()) {
-        <button mat-stroked-button routerLink="/profile">{{authService.currentUserSig()?.username}}'s Profile</button>
-        <button mat-elevated-button color="danger" (click)="authService.logout()">Logout</button>
+        <button mat-stroked-button routerLink="/profile">{{authService.currentUserSig()}}'s Profile</button>
+        <button mat-stroked-button (click)="authService.logout()">Logout</button>
         }
         <button class="p-2 flex" mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
           <mat-icon>

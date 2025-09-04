@@ -22,10 +22,10 @@ export class LoginComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       // optionalRoleId: [1, Validators.required],
     });
@@ -88,8 +88,10 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (res: UserAuthInterface) => {
           localStorage.setItem('token', res.token);
-          this.authService.currentUserSig.set(res.user);
-          this.authService.SetState(res.user);
+          this.authService.currentUserSig.set(res.username);
+          this.authService.SetState(res.username);
+          console.log('Login successful', res);
+          console.log("LoginComponent Navigating to profile");
           this.router.navigate(['/profile']);
         },
         error: (err) => {
