@@ -1,7 +1,9 @@
 <div class="min-h-screen flex flex-col">
   <header>
     <mat-toolbar color="primary" class="h-16 flex justify-between items-center px-4 shadow-md">
-      <a routerLink="/" class="text-lg font-semibold">My Demo App</a>
+      <a routerLink="/" class="text-lg font-semibold">
+        <img src="logo-transparent-bgr.png" alt="Logo" class="inline h-8 ml-2" />
+      </a>
       <div class="flex items-center gap-2">
         <button mat-stroked-button routerLink="/cars" routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/cars')">
@@ -45,6 +47,9 @@
   </header>
 
   <main class="flex-grow p-6">
+    @if (loading) {
+    <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+    }
     <router-outlet></router-outlet>
     <details>
       <section>
