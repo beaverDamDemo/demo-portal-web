@@ -69,6 +69,15 @@
         }
         }
 
+        <!-- <div>
+        <select formControlName="optionalRoleId" required>
+          <option value="" disabled selected>Select your role</option>
+          @for (role of optionalRoles; track $index) {
+          <option [ngValue]="role.id">{{ role.name }}</option>
+          }
+        </select>
+      </div> -->
+
         <button type="submit" id="login-button" [disabled]="authService.currentUserSig() !== null || authForm.invalid">
           {{ mode === 'login' ? 'Login' : 'Register' }}
         </button>
