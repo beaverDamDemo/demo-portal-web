@@ -3,7 +3,8 @@
     <div class="container-inner">
       <form (ngSubmit)="onSubmit()" class="form" [formGroup]="authForm">
         <h1 class="mb-4">{{ mode === 'login' ? 'Login' : 'Register' }}</h1>
-        <input type="text" placeholder="email" formControlName="email" required [class.invalid]="
+
+        <input type="email" placeholder="email" formControlName="email" required [class.invalid]="
           authForm.get('email')?.invalid &&
           (authForm.get('email')?.dirty ||
             authForm.get('email')?.touched ||
@@ -13,6 +14,20 @@
         (authForm.get('email')?.dirty || authForm.get('email')?.touched ||
         isSubmitted)) {
         <div class="error">This field is required</div>
+        }
+
+        @if (mode === 'register') {
+        <input type="text" placeholder="username" formControlName="username" required [class.invalid]="
+          authForm.get('username')?.invalid &&
+          (authForm.get('username')?.dirty ||
+            authForm.get('username')?.touched ||
+            isSubmitted)
+        " />
+        @if (authForm.get('username')?.hasError('required') &&
+        (authForm.get('username')?.dirty || authForm.get('username')?.touched ||
+        isSubmitted)) {
+        <div class="error">This field is required</div>
+        }
         }
 
         <div style="position: relative;" [class.isPasswordFocused]="isPasswordFocused" [class.invalid]="
@@ -28,7 +43,8 @@
             authForm.get('password')?.touched ||
             isSubmitted)
         " (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" />
-          <button id="show-password" type="button" (click)="showPassword = !showPassword" class="" tabindex="-1">
+          <button id="show-password" type="button" (click)="showPassword = !showPassword" class="" tabindex="-1"
+            aria-label="Toggle password visibility">
             <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
         </div>
@@ -53,16 +69,7 @@
         }
         }
 
-        <!-- <div>
-        <select formControlName="optionalRoleId" required>
-          <option value="" disabled selected>Select your role</option>
-          @for (role of optionalRoles; track $index) {
-          <option [ngValue]="role.id">{{ role.name }}</option>
-          }
-        </select>
-      </div> -->
-
-        <button type="submit" id="login-button" [disabled]="authService.currentUserSig() !== null">
+        <button type="submit" id="login-button" [disabled]="authService.currentUserSig() !== null || authForm.invalid">
           {{ mode === 'login' ? 'Login' : 'Register' }}
         </button>
       </form>

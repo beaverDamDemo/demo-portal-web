@@ -9,6 +9,8 @@
     "start:dev": "npm run prestart:dev && ng serve --configuration=development",
     "start:prod": "npm run prestart:dev && ng serve --configuration=development",
     "build": "npm run prestart:build && ng build --configuration=production",
+    "github-build": "ng build --configuration production --base-href '/demo-portal-web/'",
+    "github-deploy": "npx angular-cli-ghpages --dir=dist/demo-portal-web/browser --no-silent",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

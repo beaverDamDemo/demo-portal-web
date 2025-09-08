@@ -74,10 +74,9 @@ export class LoginAndRegisterForm implements OnInit {
   ngOnInit(): void {
     this.authForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
+      username: ['', this.mode === 'register' ? Validators.required : []],
       password: ['', Validators.required],
-      ...(this.mode === 'register' && {
-        confirmPassword: ['', Validators.required],
-      }),
+      confirmPassword: ['', this.mode === 'register' ? Validators.required : []],
       // optionalRoleId: [1, Validators.required],
     });
     // this.authForm.get('optionalRoleId')?.valueChanges.subscribe((optionalRoleId) => {
@@ -101,3 +100,4 @@ export class LoginAndRegisterForm implements OnInit {
     this.isSubmitted = true;
   }
 }
+

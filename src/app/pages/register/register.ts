@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserAuthInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth';
 import { LoginAndRegisterForm } from "../../components/login-and-register-form/login-and-register-form";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,8 @@ import { LoginAndRegisterForm } from "../../components/login-and-register-form/l
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
+
   isSubmitted: boolean = false;
 
   constructor(
@@ -36,10 +39,21 @@ export class RegisterComponent implements OnInit {
           this.authService.SetState(res.username);
           console.log('Register successful', res);
           console.log("RegisterComponent Navigating to profile");
+          this._snackBar.open("Logged in successfully", 'Close', {
+            panelClass: ['snackbar-success'],
+            duration: 3000
+          });
           this.router.navigate(['/profile']);
         },
         error: (err) => {
           console.error('Register failed', err);
+          const errorMessage = typeof err.error === 'string'
+            ? err.error
+            : err.error?.errors?.title || 'An error occurred';
+          this._snackBar.open(errorMessage, 'Close', {
+            panelClass: ['snackbar-error'],
+            duration: 10000
+          });
         },
       });
     this.isSubmitted = true;

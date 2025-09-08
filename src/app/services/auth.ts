@@ -19,10 +19,10 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   private authRequest(path: string, authFormValue: any) {
-    const { email, password } = authFormValue;
+    const { email, username, password, confirmPassword } = authFormValue;
     return this.http.post<UserAuthInterface>(
       `${this.API_URL}/auth/${path}`,
-      { email, password }
+      { email, username, password, confirmPassword }
     );
   }
 
