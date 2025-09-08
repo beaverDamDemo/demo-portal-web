@@ -49,9 +49,9 @@ export class LoginAndRegisterForm implements OnInit {
       }
     });
 
-    const loginButton = document.getElementById('login-button');
-    if (loginButton) {
-      loginButton.addEventListener('click', function (event) {
+    const submitButton = document.getElementById('submit-button');
+    if (submitButton) {
+      submitButton.addEventListener('click', function (event) {
         event.preventDefault();
 
         const form = document.querySelector('form');

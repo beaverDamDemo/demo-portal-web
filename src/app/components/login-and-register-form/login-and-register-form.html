@@ -78,7 +78,7 @@
         </select>
       </div> -->
 
-        <button type="submit" id="login-button" [disabled]="authService.currentUserSig() !== null || authForm.invalid">
+        <button type="submit" id="submit-button" [disabled]="authService.currentUserSig() !== null || authForm.invalid">
           {{ mode === 'login' ? 'Login' : 'Register' }}
         </button>
       </form>
