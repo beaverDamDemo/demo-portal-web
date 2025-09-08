@@ -43,10 +43,10 @@
             authForm.get('password')?.touched ||
             isSubmitted)
         " (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" />
-          <button id="show-password" type="button" (click)="showPassword = !showPassword" class="" tabindex="-1"
+          <!-- <button id="show-password" type="button" (click)="showPassword = !showPassword" class="" tabindex="-1"
             aria-label="Toggle password visibility">
             <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
+          </button> -->
         </div>
 
         @if (authForm.get('password')?.hasError('required') &&
