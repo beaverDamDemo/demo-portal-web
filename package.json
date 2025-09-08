@@ -7,7 +7,7 @@
     "prestart:build": "node src/environments/set-env.js",
     "start": "npm run prestart:dev && ng serve --configuration=development",
     "start:dev": "npm run prestart:dev && ng serve --configuration=development",
-    "start:prod": "npm run prestart:dev && ng serve --configuration=development",
+    "start:prod": "npm run prestart:dev && ng serve --configuration=production",
     "build": "npm run prestart:build && ng build --configuration=production",
     "github-build": "ng build --configuration production --base-href '/demo-portal-web/'",
     "github-deploy": "npx angular-cli-ghpages --dir=dist/demo-portal-web/browser --no-silent",
