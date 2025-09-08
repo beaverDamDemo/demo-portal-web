@@ -46,12 +46,12 @@
     </mat-toolbar>
   </header>
 
-  <main class="flex-grow p-6">
+  <main class="flex-grow p-3">
     @if (loading) {
     <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
     }
     <router-outlet></router-outlet>
-    <details>
+    <!-- <details>
       <section>
         <div class="example-label">Text</div>
         <div class="example-button-row">
@@ -167,7 +167,7 @@
           Fancy Orange Button
         </button>
       </section>
-    </details>
+    </details> -->
   </main>
 
   <footer>

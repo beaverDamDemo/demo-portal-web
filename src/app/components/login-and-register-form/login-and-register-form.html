@@ -1,6 +1,19 @@
-<div class="wrapper" [class.login]="mode === 'login'" [class.register]="mode === 'register'">
-  <div class="container">
-    <div class="container-inner">
+<section [class.login]="mode === 'login'" [class.register]="mode === 'register'">
+  <div class="wrapper" [class.login]="mode === 'login'" [class.register]="mode === 'register'">
+    <ul class="bg-bubbles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
+    <div class="container">
       <form (ngSubmit)="onSubmit()" class="form" [formGroup]="authForm">
         <h1 class="mb-4">{{ mode === 'login' ? 'Login' : 'Register' }}</h1>
 
@@ -100,17 +113,4 @@
       </form>
     </div>
   </div>
-
-  <ul class="bg-bubbles">
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-  </ul>
-</div>
+</section>

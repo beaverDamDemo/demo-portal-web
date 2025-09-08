@@ -89,6 +89,42 @@ export class LoginAndRegisterForm implements OnInit {
     //     );
     //   }
     // });
+
+    setTimeout(() => {
+      const section = document.querySelector('section');
+      if (section) {
+        const sectionHeight = section.offsetHeight;
+        const wrapper = document.querySelector('.wrapper');
+        if (wrapper) {
+          (wrapper as HTMLElement).style.height = `${sectionHeight}px`;
+        }
+        const bgBubbles = document.querySelector('.bg-bubbles');
+        if (bgBubbles) {
+          (bgBubbles as HTMLElement).style.height = `${sectionHeight}px`;
+          const bubbles = bgBubbles.querySelectorAll('li');
+          bubbles.forEach((bubble) => {
+            (bubble as HTMLElement).style.transform = 'translateY(0)';
+          });
+        }
+
+        if (!document.getElementById('custom-square-animation')) {
+          const styleSheet = document.createElement('style');
+          styleSheet.id = 'custom-square-animation';
+          styleSheet.type = 'text/css';
+          styleSheet.innerHTML = `
+          @keyframes square {
+            0% {
+            transform: translateY(0);
+            }
+            100% {
+            transform: translateY(-${(sectionHeight + 199)}px) rotate(600deg);
+            }
+          }
+          `;
+          document.head.appendChild(styleSheet);
+        }
+      }
+    }, 0);
   };
 
   togglePasswordVisibility() {
