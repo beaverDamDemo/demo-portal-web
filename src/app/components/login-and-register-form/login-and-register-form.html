@@ -106,10 +106,15 @@
           }
         </select>
       </div> -->
-
         <button type="submit" id="submit-button" [disabled]="authService.currentUserSig() !== null || authForm.invalid">
           {{ mode === 'login' ? 'Login' : 'Register' }}
         </button>
+        @if (mode === 'login') {
+        <p class="register-link">
+          Don’t have an account?
+          <a routerLink="/register">Register here</a>
+        </p>
+        }
       </form>
     </div>
   </div>

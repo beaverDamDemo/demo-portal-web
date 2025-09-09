@@ -19,10 +19,6 @@
           [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/login')">
           Login
         </button>
-        <button mat-flat-button class="btn__register" routerLink="/register" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/register')">
-          Register
-        </button>
         }
         @else if (authService.currentUserSig()) {
         <button mat-stroked-button routerLink="/todos" routerLinkActive="active-link"
