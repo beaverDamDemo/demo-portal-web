@@ -29,7 +29,6 @@ export class RegisterComponent implements OnInit {
   };
 
   onFormSubmit(credentials: any) {
-    console.log("Form submitted:", credentials);
     this.authService
       .register(credentials)
       .subscribe({
@@ -37,8 +36,7 @@ export class RegisterComponent implements OnInit {
           localStorage.setItem('token', res.token);
           this.authService.currentUserSig.set(res.username);
           this.authService.SetState(res.username);
-          console.log('Register successful', res);
-          console.log("RegisterComponent Navigating to profile");
+          console.log('✅ Register successful:', res, '- Navigating to profile');
           this._snackBar.open("Logged in successfully", 'Close', {
             panelClass: ['snackbar-success'],
             duration: 3000
@@ -47,9 +45,12 @@ export class RegisterComponent implements OnInit {
         },
         error: (err) => {
           console.error('Register failed', err);
-          const errorMessage = typeof err.error === 'string'
-            ? err.error
-            : err.error?.errors?.title || 'An error occurred';
+          const errorMessage =
+            err?.error?.message
+              ? err.error.message
+              : typeof err.error === 'string'
+                ? err.error
+                : err.error?.errors?.title || 'An error occurred';
           this._snackBar.open(errorMessage, 'Close', {
             panelClass: ['snackbar-error'],
             duration: 10000
