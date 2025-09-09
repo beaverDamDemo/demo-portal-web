@@ -33,15 +33,15 @@ export class RegisterComponent implements OnInit {
       .register(credentials)
       .subscribe({
         next: (res: UserAuthInterface) => {
-          localStorage.setItem('token', res.token);
-          this.authService.currentUserSig.set(res.username);
-          this.authService.SetState(res.username);
-          console.log('✅ Register successful:', res, '- Navigating to profile');
-          this._snackBar.open("Logged in successfully", 'Close', {
+          // localStorage.setItem('token', res.token);
+          // this.authService.currentUserSig.set(res.username);
+          // this.authService.SetState(res.username);
+          console.log('✅ Register successful:', res, '- Navigating to login');
+          this._snackBar.open("Registered successfully", 'Close', {
             panelClass: ['snackbar-success'],
             duration: 3000
           });
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/login']);
         },
         error: (err) => {
           console.error('Register failed', err);

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserAuthInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth';
 import { LoginAndRegisterForm } from "../../components/login-and-register-form/login-and-register-form";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { LoginAndRegisterForm } from "../../components/login-and-register-form/l
   styleUrl: './login.scss',
 })
 export class LoginComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
   isSubmitted: boolean = false;
 
   constructor(
@@ -25,7 +27,6 @@ export class LoginComponent implements OnInit {
   };
 
   onFormSubmit(credentials: any) {
-    console.log("Form submitted:", credentials);
     this.authService
       .login(credentials)
       .subscribe({
@@ -33,12 +34,25 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', res.token);
           this.authService.currentUserSig.set(res.username);
           this.authService.SetState(res.username);
-          console.log('Login successful', res);
-          console.log("LoginComponent Navigating to profile");
+          console.log('✅ Login successful:', res, '- Navigating to profile');
+          this._snackBar.open("Logged in successfully", 'Close', {
+            panelClass: ['snackbar-success'],
+            duration: 3000
+          });
           this.router.navigate(['/profile']);
         },
         error: (err) => {
-          console.error('Login failed', err);
+          console.error('Logged failed', err);
+          const errorMessage =
+            err?.error?.message
+              ? err.error.message
+              : typeof err.error === 'string'
+                ? err.error
+                : err.error?.errors?.title || 'An error occurred';
+          this._snackBar.open(errorMessage, 'Close', {
+            panelClass: ['snackbar-error'],
+            duration: 5000
+          });
         },
       });
     this.isSubmitted = true;
