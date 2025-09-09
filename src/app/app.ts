@@ -8,6 +8,7 @@ import { Theme, ThemeService } from './services/theme-service';
 import { AuthService } from './services/auth';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class App implements OnInit {
   public readonly authService = inject(AuthService);
   currentYear = new Date().getFullYear();
   loading = false;
+  isProduction = environment.production;
 
   constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
