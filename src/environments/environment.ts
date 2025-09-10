@@ -5,5 +5,6 @@ export const environment = {
     AVIATION_STACK_API_KEY: '4961ede6b8ed9d3994f2fa970b8c2310',
     API_URL: 'https://sample5750.runasp.net',
     appVersion: '0.0.1',
+    buildDate: '2025-09-10 18:54',
     production: true,
   };

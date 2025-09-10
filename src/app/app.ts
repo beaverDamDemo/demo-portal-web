@@ -41,6 +41,8 @@ export class App implements OnInit {
   }
 
   ngOnInit() {
+    console.log(`Built at ${environment.buildDate}`);
+
     this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
     });
