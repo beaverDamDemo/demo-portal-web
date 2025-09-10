@@ -4,8 +4,11 @@ const appVersion = require("../../package.json").version;
 const npmLifecycleEvent = process.env.npm_lifecycle_event;
 const targetFile = "./src/environments/environment.ts";
 
+console.log(colors.bgYellow(`Started running script`));
+
 function generateEnv(envPath, dotenvPath, production) {
   require("dotenv").config({ path: dotenvPath });
+
   const envConfigFile = `export const environment = {
     LUFTHANSA_CLIENT_KEY: '${process.env["LUFTHANSA_CLIENT_KEY"]}',
     LUFTHANSA_CLIENT_SECRET: '${process.env["LUFTHANSA_CLIENT_SECRET"]}',
@@ -40,9 +43,9 @@ if (npmLifecycleEvent === "prestart:dev") {
     "src/environments/.env.development",
     false
   );
-} else if (npmLifecycleEvent === "prestart:build") {
+} else if (npmLifecycleEvent === "prestart:prod") {
   generateEnv(
-    "./src/environments/environment.prod.ts",
+    "./src/environments/environment.development.ts",
     "src/environments/.env.prod",
     true
   );
