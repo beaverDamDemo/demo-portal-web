@@ -3,7 +3,7 @@ export const environment = {
     LUFTHANSA_CLIENT_SECRET: '5XRA9a2Cwg',
     API_NINJAS_API_KEY: 'zorWh15QT8tYmNrM6jihLw==8TFrmrjpA0040L1i',
     AVIATION_STACK_API_KEY: '4961ede6b8ed9d3994f2fa970b8c2310',
-    API_URL: 'http://localhost:5000',
+    API_URL: 'https://localhost:5001',
     appVersion: '0.0.1',
     production: false,
   };
