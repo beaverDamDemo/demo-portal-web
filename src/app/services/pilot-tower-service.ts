@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { ResponseMessage } from '../pages/pilot-tower-sockets/pilot-tower-sockets';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PilotTowerService {
+  private API_URL = `${environment.API_URL}/pilot-tower`;
   private socket: Socket | null = null;
 
   connect(): void {
     if (!this.socket) {
-      this.socket = io('http://localhost:3000/pilot-tower-messages', {
+      this.socket = io(`${this.API_URL}/pilot-tower-messages`, {
         transports: ['websocket']
       });
     }

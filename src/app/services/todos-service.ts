@@ -1,33 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Todo } from '../interfaces/todo.interface';
+import { CreateTodoDto, Todo } from '../interfaces/todo.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodosService {
-  private baseUrl = 'http://localhost:8080/todos';
+  private API_URL = `${environment.API_URL}/todos`;
 
   constructor(private http: HttpClient) { }
 
   findAllTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(`${this.baseUrl}/user`);
+    return this.http.get<Todo[]>(`${this.API_URL}/user`);
   }
 
   getTodoById(id: number): Observable<Todo> {
-    return this.http.get<Todo>(`${this.baseUrl}/${id}`);
+    return this.http.get<Todo>(`${this.API_URL}/${id}`);
   }
 
-  createTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(`${this.baseUrl}/user`, todo);
+  createTodo(todo: CreateTodoDto): Observable<Todo> {
+    return this.http.post<Todo>(`${this.API_URL}/user`, todo);
   }
 
   updateTodo(id: number, updatedTodo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.baseUrl}/user/${id}`, updatedTodo);
+    return this.http.put<Todo>(`${this.API_URL}/user/${id}`, updatedTodo);
   }
 
   deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/user/${id}`);
+    return this.http.delete<void>(`${this.API_URL}/user/${id}`);
   }
 }
