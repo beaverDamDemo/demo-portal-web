@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserAuthInterface } from '../../interfaces/user.interface';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { LoginAndRegisterForm } from "../../components/login-and-register-form/login-and-register-form";
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 

@@ -1,4 +1,4 @@
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../services/auth.service';
 import { Component, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
 @Component({
   selector: 'app-profile',

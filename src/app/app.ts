@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { Theme, ThemeService } from './services/theme-service';
-import { AuthService } from './services/auth';
+import { AuthService } from './services/auth.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
 import { environment } from '../environments/environment';
@@ -45,17 +45,6 @@ export class App implements OnInit {
 
     this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
-    });
-
-    this.authService.get().subscribe({
-      next: (res) => {
-        this.authService.currentUserSig.set(res);
-        console.log("🎉 ~ AppComponent ~ this.authService.get ~ res:", res);
-      },
-      error: (e: Error) => {
-        console.log("🎉 ~ AppComponent ~ this.authService.get ~ e:", e);
-        this.authService.currentUserSig.set(null);
-      }
     });
   }
 
