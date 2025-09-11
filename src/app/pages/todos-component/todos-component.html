@@ -1,12 +1,18 @@
 <div class="max-w-3xl mx-auto p-6 rounded-lg">
   <main id="todolist" class="p-6">
     <h2 class="text-2xl font-semibold mb-4 text-center">📝 Todo List</h2>
-
-    @if (todos.length > 0) {
+    @if (todos_sig().length > 0) {
     <ul class="space-y-2">
-      @for (todo of todos; track $index) {
+      @for (todo of todos_sig(); track $index) {
       <li [class.done]="todo.completed" class="flex items-center justify-between p-2 border rounded">
-        <span class="label">{{ todo.description }}</span>
+        <div class="label">
+          <div class="text-lg font-bold">
+            {{ todo.name }}
+          </div>
+          <div class="text-sm">
+            {{ todo.description }}
+          </div>
+        </div>
         <div class="actions flex gap-2">
           <button class="btn-picto" type="button" (click)="updateTodo(todo)" [attr.aria-label]="todo.completed"
             [attr.title]="todo.completed ? 'Undone' : 'Completed'">
@@ -26,19 +32,29 @@
     <!-- <app-toggle-button *ngIf="todo.length > 0" [label]="'Move done items at the end?'" name="todosort"
       (clicked)="clickOnToggle()">
     </app-toggle-button> -->
-
-    <form (submit)="addTodo(); $event.preventDefault()" class="flex gap-4 mb-6">
-      <mat-form-field class="flex-1" appearance="outline">
+    <form [formGroup]="form" (ngSubmit)="addTodo()" class="form mt-6">
+      <mat-form-field class="full-width">
         <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="newTodo.name" name="name" required />
+        <input matInput formControlName="name" placeholder="Enter name" />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+        <mat-error>
+          Name is required.
+        </mat-error>
+        }
       </mat-form-field>
-
-      <mat-form-field class="flex-1" appearance="outline">
+      <mat-form-field class="full-width">
         <mat-label>Description</mat-label>
-        <input matInput [(ngModel)]="newTodo.description" name="description" required />
+        <textarea matInput formControlName="description" placeholder="Enter description" rows="4">
+        </textarea>
+        @if (form.controls.description.touched && form.controls.description.invalid) {
+        <mat-error>
+          Description is required.
+        </mat-error>
+        }
       </mat-form-field>
-
-      <button mat-raised-button color="primary" type="submit">Add Todo</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" class="full-width">
+        Add Todo
+      </button>
     </form>
   </main>
 </div>

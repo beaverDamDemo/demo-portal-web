@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { TodosService } from '../../services/todos-service';
 import { Todo } from '../../interfaces/todo.interface';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -22,7 +22,8 @@ import { MatListModule } from '@angular/material/list';
     ReactiveFormsModule,
   ],
   templateUrl: './todos-component.html',
-  styleUrl: './todos-component.scss'
+  styleUrl: './todos-component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodosComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -31,7 +32,7 @@ export class TodosComponent implements OnInit {
     name: this.fb.control('my first todo', { validators: [Validators.required, Validators.maxLength(100)] }),
     description: this.fb.control('Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum minus quas rem explicabo pariatur dolorum perspiciatis mollitia in atque ut, enim, impedit voluptatibus! Voluptate nemo culpa, odit molestiae tenetur placeat.', { validators: [Validators.required, Validators.maxLength(500)] })
   });
-  todos: Todo[] = [];
+  todos_sig = signal<Todo[]>([]);
 
   constructor(private todosService: TodosService) { }
 
@@ -41,10 +42,13 @@ export class TodosComponent implements OnInit {
 
   loadTodos(): void {
     this.todosService.findAllTodos().subscribe({
-      next: (data) => this.todos = data,
+      next: (data) => {
+        this.todos_sig.set(data);
+      },
       error: (err) => console.error('Failed to load todos', err)
     });
   }
+
 
   addTodo() {
     if (this.form.invalid) return;
@@ -69,8 +73,8 @@ export class TodosComponent implements OnInit {
   updateTodo(todo: Todo): void {
     this.todosService.updateTodo(todo.id, todo).subscribe({
       next: (updated) => {
-        const index = this.todos.findIndex(t => t.id === updated?.id);
-        if (index !== -1 && updated) this.todos[index] = updated;
+        if (!updated) return;
+        this.todos_sig.update(list => list.map(t => t.id === updated.id ? updated : t));
       },
       error: (err) => console.error('Failed to update todo', err)
     });
@@ -78,7 +82,9 @@ export class TodosComponent implements OnInit {
 
   deleteTodo(id: number): void {
     this.todosService.deleteTodo(id).subscribe({
-      next: () => this.todos = this.todos.filter(t => t.id !== id),
+      next: () => {
+        this.todos_sig.update(list => list.filter(t => t.id != id));
+      },
       error: (err) => console.error('Failed to delete todo', err)
     });
   }
