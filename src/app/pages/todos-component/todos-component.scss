@@ -1,22 +1,36 @@
-@keyframes strikeitem {
-  to {
-    width: calc(100% + 1rem);
-  }
+:host {
+  --color-primary: #FF6666;
+  --color-primary-hover: #FF5E5E;
+  --color-text-on-primary: #FFF;
+  --color-white: #FFF;
+  --color-white-muted: rgba(255, 255, 255, 0.3);
+  --color-overlay: rgba(255, 255, 255, 0.1);
+  --color-shadow: rgba(100, 100, 100, 0.1);
+  --color-focus-ring: rgba(0, 0, 0, 0.1);
+  --container-max-width: 500px;
+  --space-xl: 4rem;
+  --space-lg: 3rem;
+  --space-md: 2rem;
+  --space-sm: 1.3rem;
+  --space-xs: 0.5rem;
+  --input-height: 3rem;
+  --ease-fast: 0.2s ease-out;
+  --ease-fast-inout: 0.2s ease-in-out;
 }
 
 #todolist {
-  margin: 4rem auto;
-  padding: 2rem 3rem 3rem;
-  max-width: 500px;
-  background: #FF6666;
-  color: #FFF;
-  box-shadow: -20px -20px 0px 0px rgba(100, 100, 100, 0.1);
+  margin: var(--space-xl) auto;
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  max-width: var(--container-max-width);
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  box-shadow: -20px -20px 0px 0px var(--color-shadow);
 
   h1 {
     font-weight: normal;
     font-size: 2.6rem;
     letter-spacing: 0.05em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid var(--color-white-muted);
 
     span {
       display: block;
@@ -35,7 +49,7 @@
       padding: 1.1rem 3rem;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--color-overlay);
       border-width: 0;
 
       .actions {
@@ -45,24 +59,14 @@
 
       .label {
         position: relative;
-        transition: opacity 0.2s linear;
+        transition: opacity var(--ease-fast);
       }
 
-      .done {
+      &.done {
+        color: #f3f3f3;
+
         .label {
           opacity: 0.6;
-
-          &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: -0.5rem;
-            display: block;
-            width: 0%;
-            height: 1px;
-            background: #FFF;
-            animation: strikeitem 0.3s ease-out forwards;
-          }
         }
       }
 
@@ -71,7 +75,7 @@
         background: none;
         -webkit-appearance: none;
         cursor: pointer;
-        color: #FFF;
+        color: var(--color-text-on-primary);
       }
     }
   }
@@ -84,17 +88,16 @@
     opacity: 0.8;
   }
 
-
   form {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     gap: 16px;
-    max-width: 500px;
+    max-width: var(--container-max-width);
 
     label {
       min-width: 100%;
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--space-xs);
       font-size: 1.3rem;
     }
 
@@ -102,28 +105,27 @@
       flex-grow: 1;
       border: none;
       font-size: initial;
-      height: 3rem;
+      height: var(--input-height);
     }
 
     textarea {}
 
     button {
-      padding: 0 1.3rem;
-      border: none;
-      background: #FF6666;
-      color: #fff;
+      padding: 0 var(--space-sm);
+      border: 1px solid var(--color-white-muted);
+      background: var(--color-primary);
+      color: var(--color-white);
       text-transform: uppercase;
       font-weight: bold;
-      border: 1px solid rgba(255, 255, 255, 0.3);
       margin-left: 5px;
       cursor: pointer;
-      transition: background 0.2s ease-out;
-      height: 3rem;
+      transition: background var(--ease-fast);
+      height: var(--input-height);
       border-radius: 0;
       box-shadow: none;
 
       &:hover {
-        background: #FF5E5E;
+        background: var(--color-primary-hover);
       }
     }
   }
@@ -154,7 +156,7 @@
     margin-left: 0.6em;
     width: 38px;
     height: 22px;
-    background: #fff;
+    background: var(--color-white);
     border-radius: 999px;
     cursor: pointer;
 
@@ -167,15 +169,15 @@
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      background: #FF6666;
+      background: var(--color-primary);
       opacity: 0.7;
-      transition: all 0.2s ease-in-out;
+      transition: all var(--ease-fast-inout);
     }
   }
 
   &.togglebutton-focus {
     .tooglebutton-box {
-      box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 0px 0px 3px var(--color-focus-ring);
     }
   }
 
