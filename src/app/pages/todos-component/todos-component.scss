@@ -188,3 +188,17 @@
     }
   }
 }
+
+:host-context(html.dark-mode) {
+  #todolist {
+    background: olivedrab;
+
+    button {
+      background: olivedrab;
+
+      &:hover {
+        background: rgb(110, 139, 50);
+      }
+    }
+  }
+}
