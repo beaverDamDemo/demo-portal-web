@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
           console.log('✅ Register successful:', res, '- Navigating to login');
           this._snackBar.open("Registered successfully", 'Close', {
             panelClass: ['snackbar-success'],
-            duration: 3000
+            duration: 7500
           });
           this.router.navigate(['/login']);
         },
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
                 : err.error?.errors?.title || 'An error occurred';
           this._snackBar.open(errorMessage, 'Close', {
             panelClass: ['snackbar-error'],
-            duration: 10000
+            duration: 12500
           });
         },
       });

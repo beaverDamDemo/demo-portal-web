@@ -24,8 +24,8 @@ export class TodosService {
     return this.http.post<Todo>(`${this.API_URL}`, todo);
   }
 
-  updateTodo(id: number, updatedTodo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.API_URL}/${id}`, updatedTodo);
+  UpdateTodoCompleted(id: number, completed: boolean): Observable<Todo> {
+    return this.http.put<Todo>(`${this.API_URL}/${id}/completed`, { completed });
   }
 
   deleteTodo(id: number): Observable<void> {

@@ -49,29 +49,47 @@ export class TodosComponent implements OnInit {
     });
   }
 
-
   addTodo() {
     if (this.form.invalid) return;
 
     const { name, description } = this.form.value;
+    this.form.reset();
+    // Create a temporary optimistic todo
+    const tempId = Date.now();
+    const optimisticTodo: Todo = {
+      id: tempId,
+      name: name!,
+      description: description!,
+      completed: false,
+      createdAt: tempId.toString()
+    };
 
+    this.todos_sig.update(list => [...list, optimisticTodo]);
+
+    /**
+    // Fire the request
+    // Replace the optimistic todo with the real one from backend
+    // On error, Roll back optimistic update
+     */
     this.todosService.createTodo({
       name: name!,
       description: description!,
       completed: false
     }).subscribe({
       next: (newTodo: Todo) => {
-        console.log('Todo created:', newTodo);
-        this.form.reset();
+        this.todos_sig.update(list =>
+          list.map(t => t.id === tempId ? newTodo : t)
+        );
       },
       error: (err) => {
         console.error('Failed to create todo', err);
+        this.todos_sig.update(list => list.filter(t => t.id !== tempId));
       }
     });
   }
 
-  updateTodo(todo: Todo): void {
-    this.todosService.updateTodo(todo.id, todo).subscribe({
+  UpdateTodoCompleted(todo: Todo): void {
+    this.todosService.UpdateTodoCompleted(todo.id, !todo.completed).subscribe({
       next: (updated) => {
         if (!updated) return;
         this.todos_sig.update(list => list.map(t => t.id === updated.id ? updated : t));

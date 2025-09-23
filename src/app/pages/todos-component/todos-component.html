@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="actions flex gap-2">
-          <button class="btn-picto" type="button" (click)="updateTodo(todo)" [attr.aria-label]="todo.completed"
+          <button class="btn-picto" type="button" (click)="UpdateTodoCompleted(todo)" [attr.aria-label]="todo.completed"
             [attr.title]="todo.completed ? 'Undone' : 'Completed'">
             <mat-icon>{{ todo.completed ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
           </button>
