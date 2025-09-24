@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { TodosService } from '../../services/todos-service';
 import { Todo } from '../../interfaces/todo.interface';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { debounceTime } from 'rxjs';
 @Component({
   selector: 'app-todos-component',
   imports: [
@@ -27,11 +28,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class TodosComponent implements OnInit {
   private fb = inject(FormBuilder);
-
-  form = this.fb.group({
-    name: this.fb.control('my first todo', { validators: [Validators.required, Validators.maxLength(100)] }),
-    description: this.fb.control('Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum minus quas rem explicabo pariatur dolorum perspiciatis mollitia in atque ut, enim, impedit voluptatibus! Voluptate nemo culpa, odit molestiae tenetur placeat.', { validators: [Validators.required, Validators.maxLength(500)] })
-  });
+  form!: FormGroup;
   todos_sig = signal<Todo[]>([]);
   private _snackBar = inject(MatSnackBar);
 
@@ -39,6 +36,22 @@ export class TodosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTodos();
+
+    const savedDraft = localStorage.getItem('todoDraft');
+    const draft = savedDraft ? JSON.parse(savedDraft) : null;
+
+    this.form = this.fb.group({
+      name: this.fb.control(draft?.name || '', {
+        validators: [Validators.required, Validators.maxLength(100)]
+      }),
+      description: this.fb.control(draft?.description || '', {
+        validators: [Validators.required, Validators.maxLength(500)]
+      })
+    });
+
+    this.form.valueChanges.pipe(debounceTime(300)).subscribe(value => {
+      localStorage.setItem('todoDraft', JSON.stringify(value));
+    });
   }
 
   loadTodos(): void {
@@ -87,6 +100,7 @@ export class TodosComponent implements OnInit {
         this.todos_sig.update(list =>
           list.map(t => t.id === tempId ? newTodo : t)
         );
+        localStorage.removeItem('todoDraft');
       },
       error: (err) => {
         console.error('Failed to create todo', err);
