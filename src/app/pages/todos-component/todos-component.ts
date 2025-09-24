@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-todos-component',
   imports: [
@@ -33,6 +33,7 @@ export class TodosComponent implements OnInit {
     description: this.fb.control('Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum minus quas rem explicabo pariatur dolorum perspiciatis mollitia in atque ut, enim, impedit voluptatibus! Voluptate nemo culpa, odit molestiae tenetur placeat.', { validators: [Validators.required, Validators.maxLength(500)] })
   });
   todos_sig = signal<Todo[]>([]);
+  private _snackBar = inject(MatSnackBar);
 
   constructor(private todosService: TodosService) { }
 
@@ -45,7 +46,13 @@ export class TodosComponent implements OnInit {
       next: (data) => {
         this.todos_sig.set(data);
       },
-      error: (err) => console.error('Failed to load todos', err)
+      error: (err) => {
+        console.error('Failed to load todos', err);
+        this._snackBar.open("Failed to load todos", 'Close', {
+          panelClass: ['snackbar-error'],
+          duration: 12500
+        });
+      }
     });
   }
 
@@ -88,8 +95,8 @@ export class TodosComponent implements OnInit {
     });
   }
 
-  UpdateTodoCompleted(todo: Todo): void {
-    this.todosService.UpdateTodoCompleted(todo.id, !todo.completed).subscribe({
+  updateTodoCompleted(todo: Todo): void {
+    this.todosService.updateTodoCompleted(todo.id, !todo.completed).subscribe({
       next: (updated) => {
         if (!updated) return;
         this.todos_sig.update(list => list.map(t => t.id === updated.id ? updated : t));
