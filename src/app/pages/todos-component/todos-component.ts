@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { TodosService } from '../../services/todos-service';
 import { Todo } from '../../interfaces/todo.interface';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime } from 'rxjs';
+
+interface TodoForm {
+  name: FormControl<string>;
+  description: FormControl<string>;
+}
+
 @Component({
   selector: 'app-todos-component',
   imports: [
@@ -28,7 +34,7 @@ import { debounceTime } from 'rxjs';
 })
 export class TodosComponent implements OnInit {
   private fb = inject(FormBuilder);
-  form!: FormGroup;
+  form!: FormGroup<TodoForm>;
   todos_sig = signal<Todo[]>([]);
   private _snackBar = inject(MatSnackBar);
 
@@ -40,7 +46,7 @@ export class TodosComponent implements OnInit {
     const savedDraft = localStorage.getItem('todoDraft');
     const draft = savedDraft ? JSON.parse(savedDraft) : null;
 
-    this.form = this.fb.group({
+    this.form = this.fb.group<TodoForm>({
       name: this.fb.control(draft?.name || '', {
         validators: [Validators.required, Validators.maxLength(100)]
       }),
