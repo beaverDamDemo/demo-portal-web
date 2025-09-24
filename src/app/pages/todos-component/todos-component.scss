@@ -191,13 +191,13 @@
 
 :host-context(html.dark-mode) {
   #todolist {
-    background: olivedrab;
+    background: #163f3f;
 
     button {
-      background: olivedrab;
+      background: #163f3f;
 
       &:hover {
-        background: rgb(110, 139, 50);
+        background: #123737;
       }
     }
   }
