@@ -35,7 +35,7 @@
     <form [formGroup]="form" (ngSubmit)="addTodo()" class="form mt-6">
       <mat-form-field class="full-width">
         <mat-label>Name</mat-label>
-        <input matInput formControlName="name" placeholder="Enter name" />
+        <input matInput formControlName="name" placeholder="Enter name" (keydown.enter)="addTodo()" />
         @if (form.controls.name.touched && form.controls.name.invalid) {
         <mat-error>
           Name is required.
