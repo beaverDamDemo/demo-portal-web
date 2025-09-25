@@ -12,11 +12,28 @@ export class PilotTowerService {
   private socketSocketIo: Socket | null = null;
   private socket: WebSocket | null = null;
 
-  connect(): void {
-    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-      const wsUrl = `${environment.API_URL.replace(/^http/, 'ws')}/pilot-tower/pilot-tower-messages`;
-      this.socket = new WebSocket(wsUrl);
-    }
+  connect(): Observable<boolean> {
+    return new Observable(subscriber => {
+      try {
+        this.socket = new WebSocket(`${environment.API_URL.replace(/^http/, 'ws')}/pilot-tower/pilot-tower-messages`);
+
+        this.socket.onopen = () => {
+          console.log('✅ WebSocket connected');
+          subscriber.next(true);
+          subscriber.complete();
+        };
+
+        this.socket.onerror = (error) => {
+          console.error('❌ WebSocket error:', error);
+          subscriber.next(false);
+          subscriber.complete();
+        };
+      } catch (e) {
+        console.error('❌ Exception during WebSocket connect:', e);
+        subscriber.next(false);
+        subscriber.complete();
+      }
+    });
   }
 
   listenToMessages(): Observable<string> {

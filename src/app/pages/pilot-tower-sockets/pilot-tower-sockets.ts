@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { PilotTowerService } from '../../services/pilot-tower-service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export type ResponseMessage = {
   timestamp: string;
@@ -44,35 +45,47 @@ export class PilotTowerSockets implements OnInit {
   // ];
   private sub: Subscription | null = null;
   currentIndex = 0;
-  isConnected: boolean = false;
+  isConnectedSig = signal<boolean>(false);
   responseSig = signal<ResponseMessage[]>([]);
+  private _snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
-    this.pilotTowerService.connect();
+    this.pilotTowerService.connect().subscribe(success => {
+      this.isConnectedSig.set(success);
+      if (success) {
+        console.log('🟢 Connected');
+        this._snackBar.open("🟢 Connected to websocket", 'Close', {
+          panelClass: ['snackbar-success'],
+          duration: 6000
+        });
+      } else {
+        console.log('🔴 Connection to websocket failed');
+        this._snackBar.open('🔴 Connection failed', 'Close', {
+          panelClass: ['snackbar-error'],
+          duration: 12500
+        });
+      }
+    });
   }
 
   startListening(): void {
-    if (!this.isConnected) {
-      this.sub = this.pilotTowerService
-        .listenToMessages()
-        .subscribe((msg) => {
-          try {
-            const parsed: ResponseMessage = JSON.parse(msg);
-            console.log('📡 Parsed message:', parsed);
-            this.responseSig.update(current => [parsed, ...current]);
-          } catch (e) {
-            console.error('❌ Failed to parse message:', msg);
-          }
-        });
-      this.isConnected = true;
-    }
+    this.sub = this.pilotTowerService
+      .listenToMessages()
+      .subscribe((msg) => {
+        try {
+          const parsed: ResponseMessage = JSON.parse(msg);
+          this.responseSig.update(current => [parsed, ...current]);
+        } catch (e) {
+          console.error('❌ Failed to parse message:', msg);
+        }
+      });
   }
 
   disconnect(): void {
     this.pilotTowerService.disconnect();
     this.sub?.unsubscribe();
     this.sub = null;
-    this.isConnected = false;
+    this.isConnectedSig.set(false);
   }
 
   sendMessage() {

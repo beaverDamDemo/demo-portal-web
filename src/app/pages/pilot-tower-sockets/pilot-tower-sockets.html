@@ -1,12 +1,12 @@
-<div class="flex gap-4 justify-center mt-6">
+<div class="flex gap-4 justify-center mt-6 mb-8">
   <button mat-raised-button
-    class="!bg-green-600 hover:bg-green-700 !text-white font-semibold py-2 px-4 rounded shadow-md disabled:opacity-50"
-    (click)="startListening()" [disabled]="isConnected">
+    class="w-48 !rounded-none !border-none !bg-green-600 hover:bg-green-700 !text-white font-semibold py-2 px-4 shadow-md disabled:opacity-50"
+    (click)="startListening()" [disabled]="!isConnectedSig()">
     Start Listen Messages
   </button>
   <button mat-stroked-button
-    class="!bg-red-600 hover:!bg-red-700 !text-white font-semibold py-2 px-4 rounded shadow-md disabled:opacity-30"
-    (click)="disconnect()" [disabled]="!isConnected">
+    class="w-48 !rounded-none !border-none !bg-red-600 hover:!bg-red-700 !text-white font-semibold py-2 px-4 shadow-md disabled:opacity-30"
+    (click)="disconnect()" [disabled]="!isConnectedSig()">
     Stop
   </button>
 </div>
@@ -19,10 +19,20 @@
     }
 </div> -->
 @for (item of responseSig(); track $index) {
-<p>
-  <span class="response-timestamp">{{item.timestamp}}:</span>
-  <span class="response-status">[{{item.status}}]:</span>
-  <span class="response-message">{{item.message}}</span>
-  <!-- <span class="response-status response-text">{{item.id}}</span> -->
+<p class="font-mono text-sm border-b border-gray-700 py-1">
+  <span class="inline-block w-[80px] text-gray-400">
+    {{ item.timestamp | date:'shortTime' }}
+  </span>
+  <span class="inline-block w-[90px]" [ngClass]="{
+    'text-green-500': item.status === 'OK',
+    'text-blue-500': item.status === 'INFO',
+    'text-orange-500': item.status === 'WARNING',
+    'text-purple-500': item.status === 'UPDATE'
+  }">
+    [{{ item.status }}]
+  </span>
+  <span class="inline-block">
+    {{ item.message }}
+  </span>
 </p>
 }
