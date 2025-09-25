@@ -11,18 +11,18 @@
   </button>
 </div>
 
-<div class="p-6 flex justify-center">
+<!-- <div class="p-6 flex justify-center">
   @if (currentIndex < pilotTowerSequence.length) { <button mat-raised-button color="accent" class="px-6 py-2"
     (click)="sendMessage()" [disabled]="!isConnected">
     {{ pilotTowerSequence[currentIndex] }}
     </button>
     }
-</div>
+</div> -->
 @for (item of responseSig(); track $index) {
 <p>
-  <span class="response-time">{{item.time}}:</span>
+  <span class="response-timestamp">{{item.timestamp}}:</span>
   <span class="response-status">[{{item.status}}]:</span>
-  <span class="response-text">{{item.text}}</span>
-  <span class="response-status response-text">{{item.id}}</span>
+  <span class="response-message">{{item.message}}</span>
+  <!-- <span class="response-status response-text">{{item.id}}</span> -->
 </p>
 }

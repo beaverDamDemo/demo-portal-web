@@ -5,10 +5,10 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 export type ResponseMessage = {
-  time: string;
+  timestamp: string;
   status: string,
-  text: string,
-  id: string,
+  message: string,
+  // id: string,
 };
 
 @Component({
@@ -20,24 +20,28 @@ export type ResponseMessage = {
 })
 export class PilotTowerSockets implements OnInit {
   private pilotTowerService = inject(PilotTowerService);
-  pilotTowerSequence: string[] = [
-    "Request pushback approved",
-    "Taxi to runway 27 via taxiway Bravo",
-    "Hold short of runway 27",
-    "Cleared for takeoff, runway 27",
-    "Contact departure on 120.5",
-    "Climb and maintain 5,000 feet",
-    "Turn left heading 180",
-    "Maintain present heading",
-    "Flight level 350 confirmed",
-    "Request frequency change approved",
-    "Descend and maintain 3,000 feet",
-    "Expect vectors for ILS runway 09",
-    "Contact approach on 124.3",
-    "Report established on the localizer",
-    "Cleared to land, runway 09",
-    "Taxi to parking via taxiway Alpha"
-  ];
+  // pilotTowerSequence: string[] = [
+  //   "This is Iron Fist, taking fire from the left flank—request support!",
+  //   "Enemy armor spotted at 2 o’clock, about 300 meters—load AP rounds!",
+  //   "Tiger tank in sight—repeat, Tiger tank in sight. Engage with caution!",
+  //   "We’ve lost tracks, immobilized near the farmhouse—need recovery!",
+  //   "Commander is down, gunner taking command—continuing push.",
+  //   "Smoke screen deployed, advancing under cover!",
+  //   "Shells running low—only three HE rounds left. Watch your shots!",
+  //   "Panzer on the ridge—artillery grid coordinates 47A, fire for effect!",
+  //   "Charlie squad is pinned—diverting north to flank the enemy.",
+  //   "We've hit a mine—rear hull damaged, can't reverse!",
+  //   "Driver, hold position! Enemy infantry moving with sticky bombs!",
+  //   "Engine overheating—reduce RPM or we’re cooked!",
+  //   "Command post this is Thunder—sector secured, no hostiles.",
+  //   "Multiple hits but turret still operational—we're staying in the fight!",
+  //   "Friendly air cover inbound—marking position with flare.",
+  //   "Radioman—get HQ on the horn, we need reinforcements!",
+  //   "Negative visual on support units—are they delayed?",
+  //   "This is Hammer—confirming enemy retreat across riverbed.",
+  //   "Cannon jammed! Switching to coaxial MG until resolved.",
+  //   "Mission complete. Returning to rally point. One casualty, minimal damage."
+  // ];
   private sub: Subscription | null = null;
   currentIndex = 0;
   isConnected: boolean = false;
@@ -51,8 +55,14 @@ export class PilotTowerSockets implements OnInit {
     if (!this.isConnected) {
       this.sub = this.pilotTowerService
         .listenToMessages()
-        .subscribe((data) => {
-          this.responseSig.set(data);
+        .subscribe((msg) => {
+          try {
+            const parsed: ResponseMessage = JSON.parse(msg);
+            console.log('📡 Parsed message:', parsed);
+            this.responseSig.update(current => [parsed, ...current]);
+          } catch (e) {
+            console.error('❌ Failed to parse message:', msg);
+          }
         });
       this.isConnected = true;
     }
@@ -66,28 +76,28 @@ export class PilotTowerSockets implements OnInit {
   }
 
   sendMessage() {
-    if (this.currentIndex < this.pilotTowerSequence.length) {
-      this.pilotTowerService.sendMessage(this.pilotTowerSequence[this.currentIndex]).subscribe(res => {
-        this.responseSig.update((messages) => [
-          ...messages,
-          {
-            text: res.text,
-            time: res.time,
-            status: res.status,
-            id: res.id
-          }
-        ]);
+    // if (this.currentIndex < this.pilotTowerSequence.length) {
+    //   this.pilotTowerService.sendSocketIoMessage(this.pilotTowerSequence[this.currentIndex]).subscribe(res => {
+    //     this.responseSig.update((messages) => [
+    //       ...messages,
+    //       {
+    //         text: res.text,
+    //         time: res.time,
+    //         status: res.status,
+    //         id: res.id
+    //       }
+    //     ]);
 
-        setTimeout(() => {
-          const updatedMessages = this.responseSig().filter((_, index, arr) => {
-            return index === arr.length - 1;
-          });
-          this.responseSig.set(updatedMessages);
-        }, 9000);
-      });
+    //     setTimeout(() => {
+    //       const updatedMessages = this.responseSig().filter((_, index, arr) => {
+    //         return index === arr.length - 1;
+    //       });
+    //       this.responseSig.set(updatedMessages);
+    //     }, 9000);
+    //   });
 
-      this.currentIndex++;
-    }
+    //   this.currentIndex++;
+    // }
   }
 
   ngOnDestroy(): void {

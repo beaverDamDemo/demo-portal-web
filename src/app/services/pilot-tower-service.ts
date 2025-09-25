@@ -9,39 +9,71 @@ import { environment } from '../../environments/environment';
 })
 export class PilotTowerService {
   private API_URL = `${environment.API_URL}/pilot-tower`;
-  private socket: Socket | null = null;
+  private socketSocketIo: Socket | null = null;
+  private socket: WebSocket | null = null;
 
   connect(): void {
-    if (!this.socket) {
-      this.socket = io(`${this.API_URL}/pilot-tower-messages`, {
-        transports: ['websocket']
-      });
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      const wsUrl = `${environment.API_URL.replace(/^http/, 'ws')}/pilot-tower/pilot-tower-messages`;
+      this.socket = new WebSocket(wsUrl);
     }
   }
 
-  sendMessage(msg: string): Observable<ResponseMessage> {
-    return new Observable((observer) => {
-      this.socket?.emit('messageFromBrowser', msg, (response: ResponseMessage) => {
-        observer.next(response);
-        observer.complete();
-      });
-    });
-  }
-
-  listenToMessages(): Observable<any> {
-    return new Observable((subscriber) => {
+  listenToMessages(): Observable<string> {
+    return new Observable(subscriber => {
       if (this.socket) {
-        this.socket.on('message', (data) => {
-          subscriber.next(data);
-        });
+        this.socket.onmessage = (event) => {
+          subscriber.next(event.data);
+        };
+
+        this.socket.onerror = (error) => {
+          console.error('WebSocket error:', error);
+        };
+
+        this.socket.onclose = () => {
+          console.warn('WebSocket connection closed');
+        };
       }
     });
   }
 
   disconnect(): void {
     if (this.socket) {
-      this.socket.disconnect();
+      this.socket.close();
       this.socket = null;
+    }
+  }
+  connectSocketIo(): void {
+    if (!this.socketSocketIo) {
+      this.socketSocketIo = io(`${this.API_URL}/pilot-tower-messages`, {
+        transports: ['websocket']
+      });
+    }
+  }
+
+  sendSocketIoMessage(msg: string): Observable<ResponseMessage> {
+    return new Observable((observer) => {
+      this.socketSocketIo?.emit('messageFromBrowser', msg, (response: ResponseMessage) => {
+        observer.next(response);
+        observer.complete();
+      });
+    });
+  }
+
+  listenToSocketIoMessages(): Observable<any> {
+    return new Observable((subscriber) => {
+      if (this.socketSocketIo) {
+        this.socketSocketIo.on('message', (data) => {
+          subscriber.next(data);
+        });
+      }
+    });
+  }
+
+  disconnectSocketIo(): void {
+    if (this.socketSocketIo) {
+      this.socketSocketIo.disconnect();
+      this.socketSocketIo = null;
     }
   }
 }
