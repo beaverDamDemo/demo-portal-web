@@ -45,13 +45,14 @@ export class PilotTowerSockets implements OnInit {
   // ];
   private sub: Subscription | null = null;
   currentIndex = 0;
-  isConnectedSig = signal<boolean>(false);
+  isSocketConnectedSig = signal<boolean>(false);
+  isListeningToMessagesSig = signal<boolean>(false);
   responseSig = signal<ResponseMessage[]>([]);
   private _snackBar = inject(MatSnackBar);
 
   ngOnInit(): void {
     this.pilotTowerService.connect().subscribe(success => {
-      this.isConnectedSig.set(success);
+      this.isSocketConnectedSig.set(success);
       if (success) {
         console.log('🟢 Connected');
         this._snackBar.open("🟢 Connected to websocket", 'Close', {
@@ -79,13 +80,19 @@ export class PilotTowerSockets implements OnInit {
           console.error('❌ Failed to parse message:', msg);
         }
       });
+    this.isListeningToMessagesSig.set(true);
   }
 
   disconnect(): void {
     this.pilotTowerService.disconnect();
     this.sub?.unsubscribe();
     this.sub = null;
-    this.isConnectedSig.set(false);
+    this.isSocketConnectedSig.set(false);
+    this.isListeningToMessagesSig.set(false);
+    this._snackBar.open('Disconnected', 'Close', {
+      panelClass: ['snackbar-error'],
+      duration: 7500
+    });
   }
 
   sendMessage() {
