@@ -1,0 +1,67 @@
+@if (loading) {
+  <div>Loading flights...</div>
+} @else if (error) {
+  <div class="text-red-600">{{ error }}</div>
+} @else {
+  <h2>Flights to Thailand</h2>
+
+  @for (flight of flights; track flight.flight_number) {
+    <div class="ljubljana-venice-to-thailand-root">
+      <div class="flight-card mb-6 p-4 border rounded shadow">
+        <div>
+          <strong>Flight:</strong> {{ flight.flight_number }} ({{
+            flight.airline
+          }})
+        </div>
+
+        <div>
+          <strong>Departure:</strong>
+          {{ flight.departure.airport }} ({{ flight.departure.iata }}) at
+          {{ flight.departure.scheduled | date: "short" }}
+        </div>
+
+        <div>
+          <strong>Arrival:</strong>
+          {{ flight.arrival.airport }} ({{ flight.arrival.iata }}) at
+          {{ flight.arrival.scheduled | date: "short" }}
+        </div>
+
+        <div><strong>Status:</strong> {{ flight.status }}</div>
+
+        @if (flight.aircraftSpecs) {
+          <h4 class="mt-2 mb-1">Aircraft Specs</h4>
+          <ul>
+            <li><strong>Model:</strong> {{ flight.aircraftSpecs.model }}</li>
+            <li>
+              <strong>Manufacturer:</strong>
+              {{ flight.aircraftSpecs.manufacturer }}
+            </li>
+            <li>
+              <strong>First Flight:</strong>
+              {{ flight.aircraftSpecs.first_flight }}
+            </li>
+            <li>
+              <strong>Capacity:</strong> {{ flight.aircraftSpecs.capacity }}
+            </li>
+            <li>
+              <strong>Range (km):</strong> {{ flight.aircraftSpecs.range_km }}
+            </li>
+            <li>
+              <strong>Engines:</strong> {{ flight.aircraftSpecs.engines }}
+            </li>
+            <li>
+              <strong>Length (m):</strong> {{ flight.aircraftSpecs.length_m }}
+            </li>
+            <li>
+              <strong>Wingspan (m):</strong>
+              {{ flight.aircraftSpecs.wingspan_m }}
+            </li>
+            <li>
+              <strong>Height (m):</strong> {{ flight.aircraftSpecs.height_m }}
+            </li>
+          </ul>
+        }
+      </div>
+    </div>
+  }
+}

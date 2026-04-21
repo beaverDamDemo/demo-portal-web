@@ -17,6 +17,10 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: 'ljubljana-venice-to-thailand',
+    loadComponent: () => import('./pages/ljubljana-venice-to-thailand-component/ljubljana-venice-to-thailand-component').then(m => m.LjubljanaVeniceToThailandComponent),
+  },
+  {
     path: 'pilot-tower-sockets',
     loadComponent: () => import('./pages/pilot-tower-sockets/pilot-tower-sockets').then((m) => m.PilotTowerSockets),
   },
