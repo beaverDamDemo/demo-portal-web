@@ -41,22 +41,50 @@ function generateEnv(envPath, dotenvPath, production) {
   });
 }
 
+const path = require("path");
+function resolveDotenvFile(env) {
+  const root = path.resolve(__dirname, "../../");
+  if (env === "development") {
+    if (fs.existsSync(path.join(root, ".env.development")))
+      return path.join(root, ".env.development");
+    if (fs.existsSync(path.join(root, ".env"))) return path.join(root, ".env");
+  } else if (env === "prod" || env === "production") {
+    if (fs.existsSync(path.join(root, ".env.prod")))
+      return path.join(root, ".env.prod");
+    if (fs.existsSync(path.join(root, ".env"))) return path.join(root, ".env");
+  }
+  if (fs.existsSync(path.join(root, ".env"))) return path.join(root, ".env");
+  return null;
+}
+
 if (npmLifecycleEvent === "prestart:dev") {
-  generateEnv(
-    "./src/environments/environment.development.ts",
-    "src/environments/.env.development",
-    false
-  );
+  const dotenvPath = resolveDotenvFile("development");
+  if (dotenvPath) {
+    generateEnv(
+      "./src/environments/environment.development.ts",
+      dotenvPath,
+      false,
+    );
+  } else {
+    console.log(
+      colors.bgRed.black("No .env.development or .env found in root."),
+    );
+  }
 } else if (npmLifecycleEvent === "prestart:prod") {
-  generateEnv(
-    "./src/environments/environment.development.ts",
-    "src/environments/.env.prod",
-    true
-  );
+  const dotenvPath = resolveDotenvFile("prod");
+  if (dotenvPath) {
+    generateEnv(
+      "./src/environments/environment.development.ts",
+      dotenvPath,
+      true,
+    );
+  } else {
+    console.log(colors.bgRed.black("No .env.prod or .env found in root."));
+  }
 } else {
   console.log(
     colors.bgRed.black(
-      `No npm lifecycle event detected. Skipping environment file copy.`
-    )
+      `No npm lifecycle event detected. Skipping environment file copy.`,
+    ),
   );
 }

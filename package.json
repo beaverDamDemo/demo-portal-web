@@ -48,6 +48,7 @@
     "@angular/compiler-cli": "^20.1.0",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.21",
+    "baseline-browser-mapping": "^2.10.20",
     "colors": "^1.4.0",
     "dotenv": "^17.2.1",
     "jasmine-core": "~5.8.0",
