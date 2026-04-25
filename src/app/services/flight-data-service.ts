@@ -10,71 +10,11 @@ export class FlightDataService {
 
   getFlightsToThailand() {
     // Example with error handling for real HTTP:
-    // return this.http.get('/api/thailand-routes').pipe(
-    //   catchError(error => {
-    //     console.error('Error fetching flights:', error);
-    //     return of([]);
-    //   })
-    // );
-    return of([
-      {
-        "flight_number": "TG941",
-        "airline": "Thai Airways",
-        "departure": {
-          "airport": "Ljubljana Jože Pučnik Airport",
-          "iata": "LJU",
-          "scheduled": "2024-05-12T09:30:00Z"
-        },
-        "arrival": {
-          "airport": "Bangkok Suvarnabhumi Airport",
-          "iata": "BKK",
-          "scheduled": "2024-05-12T23:55:00Z"
-        },
-        "aircraft": {
-          "model": "B777-300ER",
-          "iata": "77W"
-        },
-        "status": "scheduled"
-      },
-      {
-        "flight_number": "EK136",
-        "airline": "Emirates",
-        "departure": {
-          "airport": "Venice Marco Polo Airport",
-          "iata": "VCE",
-          "scheduled": "2024-05-12T15:25:00Z"
-        },
-        "arrival": {
-          "airport": "Bangkok Suvarnabhumi Airport",
-          "iata": "BKK",
-          "scheduled": "2024-05-13T07:10:00Z"
-        },
-        "aircraft": {
-          "model": "A380-800",
-          "iata": "388"
-        },
-        "status": "scheduled"
-      },
-      {
-        "flight_number": "QR306",
-        "airline": "Qatar Airways",
-        "departure": {
-          "airport": "Venice Marco Polo Airport",
-          "iata": "VCE",
-          "scheduled": "2024-05-12T13:05:00Z"
-        },
-        "arrival": {
-          "airport": "Phuket International Airport",
-          "iata": "HKT",
-          "scheduled": "2024-05-13T08:40:00Z"
-        },
-        "aircraft": {
-          "model": "A350-900",
-          "iata": "359"
-        },
-        "status": "scheduled"
-      }
-    ]
+    return this.http.get('/api/flights-to-thailand').pipe(
+      catchError(error => {
+        console.error('Error fetching flights:', error);
+        return of([]);
+      })
     );
   }
 
