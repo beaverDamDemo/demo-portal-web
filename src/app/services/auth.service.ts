@@ -1,44 +1,56 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserAuthInterface, UserInterface } from '../interfaces/user.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthFormValue } from '../interfaces/authFormValue.interface';
+import { UserAuthInterface, UserInterface } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  currentUserSig = signal<any | null>(undefined);
-  private stateItem: BehaviorSubject<any | null> = new BehaviorSubject(null);
-  stateItem$: Observable<any | null> = this.stateItem.asObservable();
+  currentUserSig = signal<string | null>(null);
+  private stateItem = new BehaviorSubject<any | null>(null);
+  stateItem$ = this.stateItem.asObservable();
 
   private API_URL = environment.API_URL;
 
   constructor(private http: HttpClient, private router: Router) {
+    this.loadUserFromToken();
+  }
 
-    const token = localStorage.getItem('token') ?? '';
+  private loadUserFromToken() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.currentUserSig.set(null);
+      return;
+    }
 
-    if (token) {
+    try {
       const payloadBase64 = token.split('.')[1];
+      if (!payloadBase64) throw new Error('Invalid token format');
+
       const payloadJson = atob(payloadBase64);
       const payload = JSON.parse(payloadJson);
-      // ASP.NET Identity puts the username in this claim:
-      const username = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
-      console.log('Decoded payload:', payload);
-      console.log('Username:', username);
-      this.currentUserSig.set(username);
-    } else {
+
+      // NestJS JWT payload: { sub, email }
+      const email = payload.email;
+
+      this.currentUserSig.set(email ?? null);
+    } catch (err) {
+      console.warn('Invalid token, clearing...', err);
+      localStorage.removeItem('token');
       this.currentUserSig.set(null);
     }
   }
 
   private authRequest(path: string, authFormValue: any) {
-    const { email, username, password, confirmPassword } = authFormValue;
+    const { email, password } = authFormValue;
+
     return this.http.post<UserAuthInterface>(
       `${this.API_URL}/auth/${path}`,
-      { email, username, password, confirmPassword }
+      { email, password }
     );
   }
 
@@ -50,10 +62,14 @@ export class AuthService {
     return this.authRequest('register', authFormValue);
   }
 
-  logout(): void {
+  saveToken(token: string) {
+    localStorage.setItem('token', token);
+    this.loadUserFromToken();
+  }
+
+  logout() {
     localStorage.removeItem('token');
     this.currentUserSig.set(null);
-    console.log("Going to login");
     this.router.navigate(['/login']);
   }
 

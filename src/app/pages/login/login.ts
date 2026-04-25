@@ -31,14 +31,27 @@ export class LoginComponent implements OnInit {
       .login(credentials)
       .subscribe({
         next: (res: UserAuthInterface) => {
-          localStorage.setItem('token', res.token);
-          this.authService.currentUserSig.set(res.username);
-          this.authService.SetState(res.username);
+          // Save token
+          localStorage.setItem('token', res.access_token);
+
+          // Decode token to extract email
+          const payloadBase64 = res.access_token.split('.')[1];
+          const payloadJson = atob(payloadBase64);
+          const payload = JSON.parse(payloadJson);
+
+          const email = payload.email;
+
+          // Update auth state
+          this.authService.currentUserSig.set(email);
+          this.authService.SetState(email);
+
           console.log('✅ Login successful:', res, '- Navigating to profile');
+
           this._snackBar.open("Logged in successfully", 'Close', {
             panelClass: ['snackbar-success'],
             duration: 3000
           });
+
           this.router.navigate(['/profile']);
         },
         error: (err) => {

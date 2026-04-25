@@ -73,10 +73,10 @@ export class LoginAndRegisterForm implements OnInit {
 
   ngOnInit(): void {
     this.authForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', this.mode === 'register' ? Validators.required : []],
-      password: ['', Validators.required],
-      confirmPassword: ['', this.mode === 'register' ? Validators.required : []],
+      email: ['test@example.com', [Validators.required, Validators.email]],
+      username: ['test', this.mode === 'register' ? Validators.required : []],
+      password: ['password', Validators.required],
+      confirmPassword: ['password', this.mode === 'register' ? Validators.required : []],
       // optionalRoleId: [1, Validators.required],
     });
     // this.authForm.get('optionalRoleId')?.valueChanges.subscribe((optionalRoleId) => {

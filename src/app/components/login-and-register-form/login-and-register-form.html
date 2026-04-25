@@ -1,5 +1,12 @@
-<section [class.login]="mode === 'login'" [class.register]="mode === 'register'">
-  <div class="wrapper" [class.login]="mode === 'login'" [class.register]="mode === 'register'">
+<section
+  [class.login]="mode === 'login'"
+  [class.register]="mode === 'register'"
+>
+  <div
+    class="wrapper"
+    [class.login]="mode === 'login'"
+    [class.register]="mode === 'register'"
+  >
     <ul class="bg-bubbles">
       <li></li>
       <li></li>
@@ -15,86 +22,130 @@
 
     <div class="container">
       <form (ngSubmit)="onSubmit()" class="form" [formGroup]="authForm">
-        <h1 class="mb-4">{{ mode === 'login' ? 'Login' : 'Register' }}</h1>
+        <h1 class="mb-4">{{ mode === "login" ? "Login" : "Register" }}</h1>
 
         <div class="input-envelope">
-          <input type="email" placeholder="email" formControlName="email" required [class.invalid]="
-          authForm.get('email')?.invalid &&
-          (authForm.get('email')?.dirty ||
-            authForm.get('email')?.touched ||
-            isSubmitted)
-        " />
+          <input
+            type="email"
+            placeholder="email"
+            formControlName="email"
+            required
+            [class.invalid]="
+              authForm.get('email')?.invalid &&
+              (authForm.get('email')?.dirty ||
+                authForm.get('email')?.touched ||
+                isSubmitted)
+            "
+            value="test@example.com"
+          />
           <div class="error-envelope">
-            @if (authForm.get('email')?.hasError('required') &&
-            (authForm.get('email')?.dirty || authForm.get('email')?.touched ||
-            isSubmitted)) {
-            <div class="error">This field is required</div>
+            @if (
+              authForm.get("email")?.hasError("required") &&
+              (authForm.get("email")?.dirty ||
+                authForm.get("email")?.touched ||
+                isSubmitted)
+            ) {
+              <div class="error">This field is required</div>
             }
           </div>
         </div>
 
         <div class="input-envelope">
-          @if (mode === 'register') {
-          <input type="text" placeholder="username" formControlName="username" required [class.invalid]="
-          authForm.get('username')?.invalid &&
-          (authForm.get('username')?.dirty ||
-            authForm.get('username')?.touched ||
-            isSubmitted)
-        " />
+          @if (mode === "register") {
+            <input
+              type="text"
+              placeholder="username"
+              formControlName="username"
+              required
+              [class.invalid]="
+                authForm.get('username')?.invalid &&
+                (authForm.get('username')?.dirty ||
+                  authForm.get('username')?.touched ||
+                  isSubmitted)
+              "
+              value="test"
+            />
 
-          <div class="error-envelope">
-            @if (authForm.get('username')?.hasError('required') &&
-            (authForm.get('username')?.dirty || authForm.get('username')?.touched ||
-            isSubmitted)) {
-            <div class="error">This field is required</div>
-            }
-          </div>
+            <div class="error-envelope">
+              @if (
+                authForm.get("username")?.hasError("required") &&
+                (authForm.get("username")?.dirty ||
+                  authForm.get("username")?.touched ||
+                  isSubmitted)
+              ) {
+                <div class="error">This field is required</div>
+              }
+            </div>
           }
         </div>
 
-        <div class="input-envelope" style="position: relative;" [class.isPasswordFocused]="isPasswordFocused"
+        <div
+          class="input-envelope"
+          style="position: relative"
+          [class.isPasswordFocused]="isPasswordFocused"
           [class.invalid]="
-          authForm.get('password')?.invalid &&
-          (authForm.get('password')?.dirty ||
-            authForm.get('password')?.touched ||
-            isSubmitted)
-        ">
-          <input [type]="showPassword ? 'text' : 'password'" placeholder="password" formControlName="password" required
+            authForm.get('password')?.invalid &&
+            (authForm.get('password')?.dirty ||
+              authForm.get('password')?.touched ||
+              isSubmitted)
+          "
+        >
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="password"
+            formControlName="password"
+            required
             [class.invalid]="
-          authForm.get('password')?.invalid &&
-          (authForm.get('password')?.dirty ||
-            authForm.get('password')?.touched ||
-            isSubmitted)
-        " (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" />
+              authForm.get('password')?.invalid &&
+              (authForm.get('password')?.dirty ||
+                authForm.get('password')?.touched ||
+                isSubmitted)
+            "
+            (focus)="isPasswordFocused = true"
+            (blur)="isPasswordFocused = false"
+            value="password"
+          />
           <!-- <button id="show-password" type="button" (click)="showPassword = !showPassword" class="" tabindex="-1"
             aria-label="Toggle password visibility">
             <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button> -->
           <div class="error-envelope">
-            @if (authForm.get('password')?.hasError('required') &&
-            (authForm.get('password')?.dirty || authForm.get('password')?.touched ||
-            isSubmitted)) {
-            <div class="error">This field is required</div>
+            @if (
+              authForm.get("password")?.hasError("required") &&
+              (authForm.get("password")?.dirty ||
+                authForm.get("password")?.touched ||
+                isSubmitted)
+            ) {
+              <div class="error">This field is required</div>
             }
           </div>
         </div>
 
         <div class="input-envelope">
-          @if (mode === 'register') {
-          <input type="password" placeholder="confirm password" formControlName="confirmPassword" required
-            [class.invalid]="
-          authForm.get('confirmPassword')?.invalid &&
-          (authForm.get('confirmPassword')?.dirty ||
-            authForm.get('confirmPassword')?.touched ||
-            isSubmitted)
-        " />
-          <div class="error-envelope">
-            @if (authForm.get('confirmPassword')?.hasError('required') &&
-            (authForm.get('confirmPassword')?.dirty || authForm.get('confirmPassword')?.touched ||
-            isSubmitted)) {
-            <div class="error">This field is required</div>
-            }
-          </div>
+          @if (mode === "register") {
+            <input
+              type="password"
+              placeholder="confirm password"
+              formControlName="confirmPassword"
+              required
+              [class.invalid]="
+                authForm.get('confirmPassword')?.invalid &&
+                (authForm.get('confirmPassword')?.dirty ||
+                  authForm.get('confirmPassword')?.touched ||
+                  isSubmitted)
+              "
+              value="password"
+            />
+            <div class="error-envelope">
+              @if (
+                authForm.get("confirmPassword")?.hasError("required") &&
+                (authForm.get("confirmPassword")?.dirty ||
+                  authForm.get("confirmPassword")?.touched ||
+                  isSubmitted)
+              ) {
+                <div class="error">This field is required</div>
+              }
+            </div>
           }
         </div>
 
@@ -106,14 +157,18 @@
           }
         </select>
       </div> -->
-        <button type="submit" id="submit-button" [disabled]="authService.currentUserSig() !== null || authForm.invalid">
-          {{ mode === 'login' ? 'Login' : 'Register' }}
+        <button
+          type="submit"
+          id="submit-button"
+          [disabled]="authService.currentUserSig() !== null || authForm.invalid"
+        >
+          {{ mode === "login" ? "Login" : "Register" }}
         </button>
-        @if (mode === 'login') {
-        <p class="register-link">
-          Don’t have an account?
-          <a routerLink="/register">Register here</a>
-        </p>
+        @if (mode === "login") {
+          <p class="register-link">
+            Don’t have an account?
+            <a routerLink="/register">Register here</a>
+          </p>
         }
       </form>
     </div>

@@ -4,6 +4,5 @@ export interface UserInterface {
 }
 
 export interface UserAuthInterface {
-  token: string;
-  username: UserInterface;
+  access_token: string;
 }
