@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Signal } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDeleteDialogComponent } from '../../components/confirm-delete-dialog/confirm-delete-dialog';
 import { TodosService } from '../../services/todos-service';
 import { Todo } from '../../interfaces/todo.interface';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -27,6 +29,8 @@ interface TodoForm {
     MatIconModule,
     MatListModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    ConfirmDeleteDialogComponent,
   ],
   templateUrl: './todos-component.html',
   styleUrl: './todos-component.scss',
@@ -37,6 +41,7 @@ export class TodosComponent implements OnInit {
   form!: FormGroup<TodoForm>;
   todos_sig = signal<Todo[]>([]);
   private _snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   constructor(private todosService: TodosService) { }
 
@@ -126,11 +131,18 @@ export class TodosComponent implements OnInit {
   }
 
   deleteTodo(id: number): void {
-    this.todosService.deleteTodo(id).subscribe({
-      next: () => {
-        this.todos_sig.update(list => list.filter(t => t.id != id));
-      },
-      error: (err) => console.error('Failed to delete todo', err)
+    const todo = this.todos_sig().find(t => t.id === id);
+    this.dialog.open(ConfirmDeleteDialogComponent, {
+      data: { itemName: todo?.name || 'this todo' },
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.todosService.deleteTodo(id).subscribe({
+          next: () => {
+            this.todos_sig.update(list => list.filter(t => t.id != id));
+          },
+          error: (err) => console.error('Failed to delete todo', err)
+        });
+      }
     });
   }
 }
