@@ -2,39 +2,39 @@
 
 This project expects the following backend API endpoints:
 
-### Auth endpoints (`/auth`)
+### Auth endpoints (`/demo-portal/auth`)
 
-- `POST   /auth/login` — login
-- `POST   /auth/register` — register
-- `GET    /auth/profile` — get current user profile
+- `POST   /demo-portal/auth/login` — login
+- `POST   /demo-portal/auth/register` — register
+- `GET    /demo-portal/auth/profile` — get current user profile
 
-### Cars endpoints (`/cars`)
+### Cars endpoints (`/demo-portal/cars`)
 
-- `GET    /cars` — get all cars
-- `GET    /cars/{id}` — get car by ID
-- `POST   /cars` — create a car
-- `PUT    /cars/{id}` — update a car
-- `DELETE /cars/{id}` — delete a car
-- `GET    /cars/price?minPrice=&maxPrice=` — filter cars by price
-- `GET    /cars/brand?brand=` — filter cars by brand
-- `GET    /cars/power?powerPs=` — filter cars by power
-- `GET    /cars/drive?wheelDrive=` — filter cars by wheel drive
-- `GET    /cars/number_seats?n=` — filter cars by minimum number of seats
-- `GET    /cars/filter?brand=&fuel=&minPrice=&maxPrice=` — filter by multiple criteria
+- `GET    /demo-portal/cars` — get all cars
+- `GET    /demo-portal/cars/{id}` — get car by ID
+- `POST   /demo-portal/cars` — create a car
+- `PUT    /demo-portal/cars/{id}` — update a car
+- `DELETE /demo-portal/cars/{id}` — delete a car
+- `GET    /demo-portal/cars/price?minPrice=&maxPrice=` — filter cars by price
+- `GET    /demo-portal/cars/brand?brand=` — filter cars by brand
+- `GET    /demo-portal/cars/power?powerPs=` — filter cars by power
+- `GET    /demo-portal/cars/drive?wheelDrive=` — filter cars by wheel drive
+- `GET    /demo-portal/cars/number_seats?n=` — filter cars by minimum number of seats
+- `GET    /demo-portal/cars/filter?brand=&fuel=&minPrice=&maxPrice=` — filter by multiple criteria
 
-### Todos endpoints (`/todos`)
+### Todos endpoints (`/demo-portal/todos`)
 
-- `GET    /todos` — get all todos
-- `GET    /todos/{id}` — get todo by ID
-- `POST   /todos` — create a todo
-- `PUT    /todos/{id}/completed` — update todo completed status
-- `DELETE /todos/{id}` — delete a todo
+- `GET    /demo-portal/todos` — get all todos
+- `GET    /demo-portal/todos/{id}` — get todo by ID
+- `POST   /demo-portal/todos` — create a todo
+- `PUT    /demo-portal/todos/{id}/completed` — update todo completed status
+- `DELETE /demo-portal/todos/{id}` — delete a todo
 
 ### Pilot Tower (WebSocket and Socket.IO)
 
-- WebSocket: `ws(s)://<API_URL>/pilot-tower/pilot-tower-messages`
-- Socket.IO: `<API_URL>/pilot-tower/pilot-tower-messages`
-- HTTP: `<API_URL>/pilot-tower` (for possible REST endpoints)
+- WebSocket: `ws(s)://<API_URL>/demo-portal/pilot-tower/pilot-tower-messages`
+- Socket.IO: `<API_URL>/demo-portal/pilot-tower/pilot-tower-messages`
+- HTTP: `<API_URL>/demo-portal/pilot-tower` (for possible REST endpoints)
 
 All endpoints are prefixed by the `API_URL` environment variable (e.g., `https://localhost:5001`).
 
@@ -86,3 +86,10 @@ npx angular-cli-ghpages --dir=dist/demo-portal-web/browser --no-silent
 ## Running unit tests
 
 ## Running end-to-end tests
+
+AviationStack free tier is too inconsistent.
+Aviation Edge free tier is gone.
+OpenSky only gives ICAO24 sometimes.
+ADSBexchange requires ICAO24 first.
+
+// For WebSocket-based aircraft data, you can also try https://aisstream.io/ as an alternative data source.

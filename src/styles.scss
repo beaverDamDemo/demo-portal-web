@@ -108,3 +108,12 @@ html.dark-mode {
 html.dark-mode ul {
   color: #d1d5db;
 }
+
+html.dark-mode .aircraft-metadata-dialog {
+  --dialog-bg: #23272e;
+  --dialog-fg: #e5e7eb;
+  --dialog-border: #444b55;
+  color: var(--dialog-fg);
+  background: var(--dialog-bg);
+  border-color: var(--dialog-border);
+}

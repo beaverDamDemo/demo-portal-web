@@ -1,16 +1,25 @@
-@if (loading) {
+@if (loading()) {
   <div>Loading flights...</div>
-} @else if (error) {
-  <div class="text-red-600">{{ error }}</div>
+} @else if (error()) {
+  <div class="text-red-600">{{ error() }}</div>
 } @else {
   <h2>Flights to Thailand</h2>
 
-  @for (flight of flights; track flight.flight_number) {
+  @for (flight of flights(); track flight.flight.number) {
     <div class="ljubljana-venice-to-thailand-root">
-      <div class="flight-card mb-6 p-4 border rounded shadow">
+      <div
+        class="flight-card mb-6 p-4 border rounded shadow"
+        (mouseenter)="
+          showAircraftMetadata(
+            flight.aircraftMetadata || flight.aircraft,
+            $event
+          )
+        "
+        (mouseleave)="hideAircraftMetadata()"
+      >
         <div>
-          <strong>Flight:</strong> {{ flight.flight_number }} ({{
-            flight.airline
+          <strong>Flight:</strong> {{ flight.flight.number }} ({{
+            flight.airline.name
           }})
         </div>
 
@@ -26,7 +35,8 @@
           {{ flight.arrival.scheduled | date: "short" }}
         </div>
 
-        <div><strong>Status:</strong> {{ flight.status }}</div>
+        <!-- No status field in backend response, so remove or handle accordingly -->
+        <!-- <div><strong>Status:</strong> {{ flight.status }}</div> -->
 
         @if (flight.aircraftSpecs) {
           <h4 class="mt-2 mb-1">Aircraft Specs</h4>
@@ -62,6 +72,15 @@
           </ul>
         }
       </div>
+      @if (
+        hoveredAircraft() &&
+        hoveredPosition() &&
+        hoveredAircraft() === (flight.aircraftMetadata || flight.aircraft)
+      ) {
+        <aircraft-metadata-dialog
+          [aircraft]="hoveredAircraft()"
+        ></aircraft-metadata-dialog>
+      }
     </div>
   }
 }

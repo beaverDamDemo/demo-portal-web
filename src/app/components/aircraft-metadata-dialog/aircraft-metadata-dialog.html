@@ -1,0 +1,13 @@
+<div class="aircraft-metadata-dialog">
+  <h3>Aircraft Details</h3>
+  <ul *ngIf="aircraft">
+    <li><strong>Model:</strong> {{ aircraft.model }}</li>
+    <li><strong>Type:</strong> {{ aircraft.type }}</li>
+    <li><strong>Manufacturer:</strong> {{ aircraft.manufacturer }}</li>
+    <li><strong>Registration:</strong> {{ aircraft.registration }}</li>
+    <li><strong>ICAO24:</strong> {{ aircraft.icao24 }}</li>
+    <li><strong>Serial Number:</strong> {{ aircraft.serialNumber }}</li>
+    <li><strong>Owner:</strong> {{ aircraft.owner }}</li>
+    <li><strong>Built:</strong> {{ aircraft.built }}</li>
+  </ul>
+</div>

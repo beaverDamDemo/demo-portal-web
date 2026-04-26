@@ -1,18 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { AircraftMetadataDialog } from './aircraft-metadata-dialog/aircraft-metadata-dialog';
 import { FlightDataService } from '../../services/flight-data-service';
 import { forkJoin } from 'rxjs';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-ljubljana-venice-to-thailand-component',
-  imports: [DatePipe],
+  imports: [DatePipe, AircraftMetadataDialog, CommonModule],
   templateUrl: './ljubljana-venice-to-thailand-component.html',
-  styleUrl: './ljubljana-venice-to-thailand-component.scss'
+  styleUrl: './ljubljana-venice-to-thailand-component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LjubljanaVeniceToThailandComponent implements OnInit {
-  flights: any[] = [];
-  loading = true;
-  error: string | null = null;
+  flights = signal<any[]>([]);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+
+  hoveredAircraft = signal<any | null>(null);
+  hoveredPosition = signal<{ x: number, y: number; } | null>(null);
+
+  showAircraftMetadata(aircraft: any, event: MouseEvent) {
+    this.hoveredAircraft.set(aircraft);
+    this.hoveredPosition.set({ x: event.clientX, y: event.clientY });
+  }
+
+  hideAircraftMetadata() {
+    this.hoveredAircraft.set(null);
+    this.hoveredPosition.set(null);
+  }
 
   constructor(private flightDataService: FlightDataService) { }
 
@@ -20,30 +35,33 @@ export class LjubljanaVeniceToThailandComponent implements OnInit {
     this.flightDataService.getFlightsToThailand().subscribe({
       next: (flights) => {
         if (!flights || !Array.isArray(flights)) {
-          this.error = 'No flights found.';
-          this.loading = false;
-          return;
-        }
-        const aircraftModels = flights.map(f => f.aircraft?.model);
-        forkJoin(
-          aircraftModels.map(model => this.flightDataService.getAircraftSpecs(model))
-        ).subscribe({
-          next: (aircraftSpecs) => {
-            this.flights = flights.map((flight, i) => ({
+          this.error.set('No flights found.');
+          this.flights.set([]);
+        } else {
+          // Fix date strings: pad hour to two digits if needed
+          const fixedFlights = flights.map(flight => {
+            const fixDate = (dateStr: string) =>
+              dateStr.replace(/T(\d:)/, 'T0$1');
+            return {
               ...flight,
-              aircraftSpecs: aircraftSpecs[i]
-            }));
-            this.loading = false;
-          },
-          error: (err) => {
-            this.error = 'Failed to load aircraft specs.';
-            this.loading = false;
-          }
-        });
+              departure: {
+                ...flight.departure,
+                scheduled: fixDate(flight.departure.scheduled)
+              },
+              arrival: {
+                ...flight.arrival,
+                scheduled: fixDate(flight.arrival.scheduled)
+              }
+            };
+          });
+          this.flights.set(fixedFlights);
+        }
+        this.loading.set(false);
       },
       error: (err) => {
-        this.error = 'Failed to load flights.';
-        this.loading = false;
+        this.error.set('Failed to load flights.');
+        this.flights.set([]);
+        this.loading.set(false);
       }
     });
   }
