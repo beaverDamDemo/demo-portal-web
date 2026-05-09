@@ -40,6 +40,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/login',
+    loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFoundComponent),
   },
 ];
