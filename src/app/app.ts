@@ -7,13 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { Theme, ThemeService } from './services/theme-service';
 import { AuthService } from './services/auth.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CommonModule } from '@angular/common';
+
 import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, RouterModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatIconModule, MatProgressBarModule
-  ],
+  imports: [RouterOutlet, RouterModule, MatToolbarModule, MatDividerModule, MatButtonModule, MatIconModule, MatProgressBarModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

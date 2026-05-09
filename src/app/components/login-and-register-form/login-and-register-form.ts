@@ -4,12 +4,12 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login-and-register-form',
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatInputModule, MatFormFieldModule, RouterModule],
+  imports: [ReactiveFormsModule, MatIconModule, MatInputModule, MatFormFieldModule, RouterModule],
   templateUrl: './login-and-register-form.html',
   styleUrl: './login-and-register-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
