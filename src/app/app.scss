@@ -8,6 +8,19 @@ main {
   pointer-events: none;
 }
 
+.logout-button {
+  --mdc-filled-button-container-color: #c0392b;
+  --mdc-filled-button-label-text-color: #fff;
+  min-width: 0;
+
+  mat-icon {
+    margin-right: 6px;
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
 mat-progress-bar {
   position: fixed;
   top: 0;

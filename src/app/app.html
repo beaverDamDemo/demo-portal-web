@@ -32,11 +32,8 @@
           [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/profile')">
           {{ authService.currentUserSig() }}'s Profile
         </button>
-        <button mat-stroked-button routerLink="/learning" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/learning')">
-          Learning
-        </button>
-        <button mat-stroked-button (click)="authService.logout()">
+        <button mat-flat-button class="logout-button" (click)="authService.logout()" aria-label="Log out">
+          <mat-icon>logout</mat-icon>
           Logout
         </button>
         }
