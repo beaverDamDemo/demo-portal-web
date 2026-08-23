@@ -5,7 +5,7 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 @use './theme' as theme;
-@import "tailwindcss";
+@use "tailwindcss" as *;
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
 html {
@@ -116,4 +116,16 @@ html.dark-mode .aircraft-metadata-dialog {
   color: var(--dialog-fg);
   background: var(--dialog-bg);
   border-color: var(--dialog-border);
+}
+
+.danger-btn {
+  /* mat-flat-button */
+  --mdc-filled-button-container-color: #c0392b !important;
+  --mdc-filled-button-label-text-color: #fff !important;
+  /* mat-stroked-button */
+  --mdc-outlined-button-label-text-color: #c0392b !important;
+  --mdc-outlined-button-outline-color: #c0392b !important;
+  /* mat-tonal-button */
+  --mdc-filled-tonal-button-container-color: #f5b7b1 !important;
+  --mdc-filled-tonal-button-label-text-color: #c0392b !important;
 }

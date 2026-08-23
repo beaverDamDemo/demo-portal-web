@@ -30,7 +30,6 @@ interface TodoForm {
     MatListModule,
     ReactiveFormsModule,
     MatDialogModule,
-    ConfirmDeleteDialogComponent,
   ],
   templateUrl: './todos-component.html',
   styleUrl: './todos-component.scss',
