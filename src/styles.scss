@@ -27,6 +27,18 @@ html {
   // background-color: var(--mat-sys-surface);
   // color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
+
+  --s: 50px;
+  --c1: #eef7ee;
+  --c2: #fdfdfd;
+  --_g: var(--c1) 6.1%, var(--c2) 6.4% 18.6%, var(--c1) 18.9% 31.1%,
+    var(--c2) 31.4% 43.6%, var(--c1) 43.9% 56.1%, var(--c2) 56.4% 68.6%, #0000 68.9%;
+  background:
+    radial-gradient(var(--s) at 100% 0, var(--_g)),
+    radial-gradient(var(--s) at 0 0, var(--_g)),
+    radial-gradient(var(--s) at 0 100%, var(--_g)),
+    radial-gradient(var(--s) at 100% 100%, var(--_g)) var(--c1);
+  background-size: var(--s) var(--s);
 }
 
 /* You can add global styles to this file, and also import other style files */
