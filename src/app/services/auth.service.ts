@@ -70,7 +70,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this.currentUserSig.set(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 
   get(): Observable<UserInterface | null> {

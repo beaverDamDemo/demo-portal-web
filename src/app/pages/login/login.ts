@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserAuthInterface } from '../../interfaces/user.interface';
 import { AuthService } from '../../services/auth.service';
 import { LoginAndRegisterForm } from "../../components/login-and-register-form/login-and-register-form";
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
 
   }
@@ -31,28 +32,15 @@ export class LoginComponent implements OnInit {
       .login(credentials)
       .subscribe({
         next: (res: UserAuthInterface) => {
-          // Save token
-          localStorage.setItem('token', res.access_token);
-
-          // Decode token to extract email
-          const payloadBase64 = res.access_token.split('.')[1];
-          const payloadJson = atob(payloadBase64);
-          const payload = JSON.parse(payloadJson);
-
-          const email = payload.email;
-
-          // Update auth state
-          this.authService.currentUserSig.set(email);
-          this.authService.SetState(email);
-
-          console.log('✅ Login successful:', res, '- Navigating to profile');
+          this.authService.saveToken(res.access_token);
 
           this._snackBar.open("Logged in successfully", 'Close', {
             panelClass: ['snackbar-success'],
             duration: 3000
           });
 
-          this.router.navigate(['/profile']);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          this.router.navigateByUrl(this.isInternalReturnUrl(returnUrl) ? returnUrl : '/');
         },
         error: (err) => {
           console.error('Logged failed', err);
@@ -69,5 +57,9 @@ export class LoginComponent implements OnInit {
         },
       });
     this.isSubmitted = true;
+  }
+
+  private isInternalReturnUrl(url: string | null): url is string {
+    return !!url && url.startsWith('/') && !url.startsWith('//');
   }
 }

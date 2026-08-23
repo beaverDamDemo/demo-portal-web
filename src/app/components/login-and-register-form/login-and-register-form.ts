@@ -1,6 +1,6 @@
-import { Component, effect, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,25 +30,7 @@ export class LoginAndRegisterForm implements OnInit {
   constructor(
     public authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router,
   ) {
-    effect(() => {
-      const now = new Date().toLocaleTimeString();
-      console.log(
-        `%c🕒 ${now} → currentUserSig:`,
-        'color: dodgerblue; font-style: italic;',
-        this.authService.currentUserSig()
-      );
-      if (this.authService.currentUserSig()) {
-        console.log("Navigating to profile");
-        this.authForm.disable();
-        this.router.navigate(['/profile']);
-      } else if (this.authService.currentUserSig() === null) {
-        console.log('Now we should enable it');
-        this.authForm.enable();
-      }
-    });
-
     const submitButton = document.getElementById('submit-button');
     if (submitButton) {
       submitButton.addEventListener('click', function (event) {
