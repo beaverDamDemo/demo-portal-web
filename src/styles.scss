@@ -41,6 +41,15 @@ body {
   font-family: 'DM Sans', Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mat-mdc-button-base:not(.mat-mdc-icon-button) {
+  --mat-sys-corner-full: 2px;
+  --mdc-filled-button-container-shape: 2px;
+  --mdc-filled-tonal-button-container-shape: 2px;
+  --mdc-outlined-button-container-shape: 2px;
+  --mdc-protected-button-container-shape: 2px;
+  --mdc-text-button-container-shape: 2px;
+}
+
 ::-moz-selection {
   background: #ffef40;
 }
