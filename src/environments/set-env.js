@@ -70,7 +70,21 @@ if (npmLifecycleEvent === "prestart:dev") {
       colors.bgRed.black("No .env.development or .env found in root."),
     );
   }
-} else if (npmLifecycleEvent === "prestart:prod") {
+} else if (npmLifecycleEvent === "prestart:local-prod") {
+  const dotenvPath = resolveDotenvFile("prod");
+  if (dotenvPath) {
+    generateEnv(
+      "./src/environments/environment.development.ts",
+      dotenvPath,
+      false,
+    );
+  } else {
+    console.log(colors.bgRed.black("No .env.prod or .env found in root."));
+  }
+} else if (
+  npmLifecycleEvent === "prestart:prod" ||
+  npmLifecycleEvent === "prestart:build"
+) {
   const dotenvPath = resolveDotenvFile("prod");
   if (dotenvPath) {
     generateEnv(

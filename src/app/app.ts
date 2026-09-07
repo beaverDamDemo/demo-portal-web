@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +21,7 @@ export class App implements OnInit {
   protected readonly title = signal('Demo Portal');
   currentTheme: Theme = 'light';
   private readonly themeService = inject(ThemeService);
+  private readonly http = inject(HttpClient);
   public readonly authService = inject(AuthService);
   currentYear = new Date().getFullYear();
   loading = false;
@@ -41,6 +43,11 @@ export class App implements OnInit {
 
   ngOnInit() {
     console.log(`Built at ${environment.buildDate}`);
+
+    this.http.get(`${environment.API_URL}/health`).subscribe({
+      next: response => console.log('%cBackend health response:', 'color: green; font-weight: bold;', response),
+      error: error => console.error('%cBackend health check failed:', 'color: red; font-weight: bold;', error),
+    });
 
     this.themeService.theme$.subscribe(theme => {
       this.currentTheme = theme;
