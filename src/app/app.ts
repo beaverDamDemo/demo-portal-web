@@ -26,6 +26,22 @@ export class App implements OnInit {
   currentYear = new Date().getFullYear();
   loading = false;
   isProduction = environment.production;
+  buildDate = environment.buildDate;
+
+  get formattedBuildDate(): string {
+    if (!this.buildDate) return '';
+    const date = new Date(this.buildDate);
+    return isNaN(date.getTime())
+      ? this.buildDate
+      : date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+  }
 
   constructor(private router: Router) {
     this.router.events.subscribe((event: Event) => {
@@ -46,7 +62,16 @@ export class App implements OnInit {
 
     this.http.get(`${environment.API_URL}/health`).subscribe({
       next: response => console.log('%cBackend health response:', 'color: green; font-weight: bold;', response),
-      error: error => console.error('%cBackend health check failed:', 'color: red; font-weight: bold;', error),
+      error: error => {
+        console.error('%cBackend health check failed:', 'color: red; font-weight: bold;', error);
+        if (error?.status === 503 || error?.status === 0 || error?.status === 504) {
+          console.log(
+            '%c 😴 BACKEND MAY BE SLEEPING! %c\nHealth check failed with status ' + (error?.status || '503/offline') + '. Please check if the backend is not sleeping or waking up!',
+            'background: #ff0055; color: #ffffff; font-size: 14px; font-weight: bold; padding: 6px 10px; border-radius: 4px;',
+            'color: #ffee00; font-size: 13px; font-weight: bold; background: #1a0022; padding: 6px 10px; border-radius: 4px;'
+          );
+        }
+      },
     });
 
     this.themeService.theme$.subscribe(theme => {

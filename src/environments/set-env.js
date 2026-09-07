@@ -8,7 +8,15 @@ console.log(colors.zebra("Started set-env.js"));
 function generateEnv(envPath, dotenvPath, production) {
   require("dotenv").config({ path: dotenvPath });
 
-  const buildDate = new Date().toISOString().slice(0, 16).replace("T", " ");
+  const now = new Date();
+  const buildDate = now.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
   const envConfigFile = `export const environment = {
     LUFTHANSA_CLIENT_KEY: '${process.env["LUFTHANSA_CLIENT_KEY"]}',
     LUFTHANSA_CLIENT_SECRET: '${process.env["LUFTHANSA_CLIENT_SECRET"]}',
@@ -30,7 +38,7 @@ function generateEnv(envPath, dotenvPath, production) {
       if (npmLifecycleEvent === "prestart:dev") {
         console.log(colors.bgGreen.black(` DEV: ${message} `));
       } else if (npmLifecycleEvent === "prestart:prod") {
-        console.log(colors.bgRed.white.bold(` PROD: ${message} `));
+        console.log(colors.bgGreen.white.bold(` PROD: ${message} `));
       } else {
         console.log(colors.bgBlue.white(` ${message} `));
       }

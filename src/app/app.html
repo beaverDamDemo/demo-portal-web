@@ -172,16 +172,22 @@
 
   <footer>
     @if (isProduction) {
-    <mat-toolbar color="tertiary" class="h-14 flex items-center justify-center">
+    <mat-toolbar color="tertiary" class="h-14 flex items-center justify-center gap-4">
       <span class="text-xs text-gray-500">
         &copy; {{ currentYear }} Zdenko Vuk
+      </span>
+      <span class="text-xs text-gray-500">
+        Built at: {{ formattedBuildDate }}
       </span>
     </mat-toolbar>
     } @else {
     <mat-toolbar color="warn"
-      class="h-14 flex items-center justify-center border-2 border-dashed border-orange-300 bg-yellow-500">
+      class="h-14 flex items-center justify-center gap-4 border-2 border-dashed border-orange-300 bg-yellow-500">
       <span class="text-xs text-orange-500 font-bold">
         DEVELOPMENT MODE &copy; {{ currentYear }} Zdenko Vuk
+      </span>
+      <span class="text-xs text-orange-500 font-bold">
+        Built at: {{ formattedBuildDate }}
       </span>
     </mat-toolbar>
     }
