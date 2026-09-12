@@ -236,3 +236,27 @@
   font-size: 0.95rem;
   opacity: 0.95;
 }
+
+/* Collapsible description */
+.label-row {
+  width: 100%;
+}
+
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-on-primary);
+}
+
+.todo-desc {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.label {
+  cursor: pointer;
+}

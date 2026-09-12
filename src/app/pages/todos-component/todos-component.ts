@@ -40,6 +40,7 @@ export class TodosComponent implements OnInit {
   form!: FormGroup<TodoForm>;
   todos_sig = signal<Todo[]>([]);
   loading_sig = signal<boolean>(true);
+  expanded_sig = signal<Record<number, boolean>>({});
   private _snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
 
@@ -70,6 +71,7 @@ export class TodosComponent implements OnInit {
     this.todosService.findAllTodos().subscribe({
       next: (data) => {
         this.todos_sig.set(data);
+        this.expanded_sig.set({});
         this.loading_sig.set(false);
       },
       error: (err) => {
@@ -81,6 +83,13 @@ export class TodosComponent implements OnInit {
         });
       }
     });
+  }
+
+  toggleDescription(id: number) {
+    const current = this.expanded_sig();
+    const next: Record<number, boolean> = { ...current };
+    next[id] = !next[id];
+    this.expanded_sig.set(next);
   }
 
   addTodo() {

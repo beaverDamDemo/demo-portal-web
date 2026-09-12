@@ -14,20 +14,29 @@
     <ul class="space-y-2">
       @for (todo of todos_sig(); track $index) {
       <li [class.done]="todo.completed" class="flex items-center justify-between p-2 border rounded">
-        <div class="label">
-          <div class="text-lg font-bold">
-            {{ todo.name }}
+        <div class="label w-full" (click)="toggleDescription(todo.id)">
+          <div class="label-row flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <button class="expand-btn btn-picto" type="button"
+                (click)="toggleDescription(todo.id); $event.stopPropagation()"
+                [attr.aria-expanded]="!!expanded_sig()[todo.id]"
+                [attr.title]="expanded_sig()[todo.id] ? 'Collapse' : 'Expand'">
+                <mat-icon>{{ expanded_sig()[todo.id] ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </button>
+              <div class="text-lg font-bold">{{ todo.name }}</div>
+            </div>
           </div>
-          <div class="text-sm">
-            {{ todo.description }}
-          </div>
+          @if (expanded_sig()[todo.id]) {
+          <div class="text-sm todo-desc mt-2">{{ todo.description }}</div>
+          }
         </div>
         <div class="actions flex gap-2">
-          <button class="btn-picto" type="button" (click)="updateTodoCompleted(todo)" [attr.aria-label]="todo.completed"
-            [attr.title]="todo.completed ? 'Undone' : 'Completed'">
+          <button class="btn-picto" type="button" (click)="updateTodoCompleted(todo); $event.stopPropagation()"
+            [attr.aria-label]="todo.completed" [attr.title]="todo.completed ? 'Undone' : 'Completed'">
             <mat-icon>{{ todo.completed ? 'check_box' : 'check_box_outline_blank' }}</mat-icon>
           </button>
-          <button class="btn-picto" type="button" (click)="deleteTodo(todo.id)" aria-label="Delete" title="Delete">
+          <button class="btn-picto" type="button" (click)="deleteTodo(todo.id); $event.stopPropagation()"
+            aria-label="Delete" title="Delete">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
