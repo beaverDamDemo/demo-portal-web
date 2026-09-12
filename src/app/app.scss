@@ -5,7 +5,7 @@ main {
 }
 
 .active-link {
-  pointer-events: none;
+  border-bottom: 3px solid currentColor;
 }
 
 .logout-button {

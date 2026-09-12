@@ -10,26 +10,26 @@
           Cars
         </button> -->
         <button mat-stroked-button routerLink="/ljubljana-venice-to-thailand" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/ljubljana-venice-to-thailand')">
+          [routerLinkActiveOptions]="{ exact: true }">
           Fly to TH
         </button>
         <button mat-stroked-button routerLink="/pilot-tower-sockets" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/pilot-tower-sockets')">
+          [routerLinkActiveOptions]="{ exact: true }">
           Socket example
         </button>
 
         @if (authService.currentUserSig() === null) {
         <button mat-flat-button routerLink="/login" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/login')">
+          [routerLinkActiveOptions]="{ exact: true }">
           Login
         </button>
         } @else if (authService.currentUserSig()) {
         <button mat-stroked-button routerLink="/todos" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/todos')">
+          [routerLinkActiveOptions]="{ exact: true }">
           Todos
         </button>
         <button mat-stroked-button routerLink="/profile" routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }" [disabled]="isActive('/profile')">
+          [routerLinkActiveOptions]="{ exact: true }">
           {{ authService.currentUserSig() }}'s Profile
         </button>
         <button mat-flat-button class="logout-button" (click)="authService.logout()" aria-label="Log out">
