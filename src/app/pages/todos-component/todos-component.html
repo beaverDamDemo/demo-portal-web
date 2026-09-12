@@ -1,6 +1,15 @@
 <div class="max-w-3xl mx-auto p-6 rounded-lg">
   <main id="todolist" class="p-6">
     <h2 class="text-2xl font-semibold mb-4 text-center">📝 Todo List</h2>
+    @if (loading_sig()) {
+    <div class="loader-wrapper">
+      <div class="loader" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loader-label">Loading todos…</div>
+      </div>
+    </div>
+    }
+
     @if (todos_sig().length > 0) {
     <ul class="space-y-2">
       @for (todo of todos_sig(); track $index) {

@@ -77,7 +77,8 @@ html {
 
 html.dark-mode {
   color-scheme: dark;
-  @include mat.theme((color: mat.$cyan-palette, ))
+  --c1: #0b1220;
+  --c2: #172033;
 }
 
 ::view-transition-old(root) {

@@ -16,7 +16,7 @@ h2 {
 }
 
 .flight-card {
-  // background: #fff;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.04);
@@ -32,6 +32,24 @@ h2 {
 
 .flight-card:hover {
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.10);
+}
+
+:host-context(html.dark-mode) {
+  .flight-card {
+    background: #0f1720;
+    border-color: #374151;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    color: #e5e7eb;
+  }
+
+  .flight-card-active {
+    border-color: #0891b2;
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.12), 0 6px 18px rgba(0, 0, 0, 0.6);
+  }
+
+  .flight-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+  }
 }
 
 ul {

@@ -39,6 +39,7 @@ export class TodosComponent implements OnInit {
   private fb = inject(FormBuilder);
   form!: FormGroup<TodoForm>;
   todos_sig = signal<Todo[]>([]);
+  loading_sig = signal<boolean>(true);
   private _snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
 
@@ -65,11 +66,14 @@ export class TodosComponent implements OnInit {
   }
 
   loadTodos(): void {
+    this.loading_sig.set(true);
     this.todosService.findAllTodos().subscribe({
       next: (data) => {
         this.todos_sig.set(data);
+        this.loading_sig.set(false);
       },
       error: (err) => {
+        this.loading_sig.set(false);
         console.error('Failed to load todos', err);
         this._snackBar.open("Failed to load todos", 'Close', {
           panelClass: ['snackbar-error'],
