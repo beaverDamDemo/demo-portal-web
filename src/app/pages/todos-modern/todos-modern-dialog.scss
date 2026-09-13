@@ -1,0 +1,20 @@
+.dialog-root {
+  color: #000;
+  background: #fff;
+  padding: 12px;
+}
+
+.dialog-root .field {
+  margin-bottom: 8px;
+}
+
+.dialog-root .actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.dialog-root .error {
+  color: #900;
+  font-size: 12px;
+}

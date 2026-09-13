@@ -1,30 +1,23 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodosService } from '../../services/todos-service';
 import { Todo } from '../../interfaces/todo.interface';
-import { debounceTime } from 'rxjs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
-interface TodoForm {
-  name: FormControl<string>;
-  description: FormControl<string>;
-}
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-todos-modern',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule],
+  imports: [CommonModule, MatDialogModule, MatSnackBarModule, MatButtonModule],
   templateUrl: './todos-modern.html',
   styleUrl: './todos-modern.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodosModernComponent implements OnInit {
-  private fb = inject(FormBuilder);
   private todosService = inject(TodosService);
   private _snackBar = inject(MatSnackBar);
-
-  form!: FormGroup<TodoForm>;
+  private dialog = inject(MatDialog);
   todos_sig = signal<Todo[]>([]);
   loading_sig = signal<boolean>(true);
   expanded_sig = signal<Record<number, boolean>>({});
@@ -32,21 +25,17 @@ export class TodosModernComponent implements OnInit {
   ngOnInit(): void {
     this.loadTodos();
 
-    const savedDraft = localStorage.getItem('todoDraft');
-    const draft = savedDraft ? JSON.parse(savedDraft) : null;
+    // creation handled in dialog
+  }
 
-    this.form = this.fb.group<TodoForm>({
-      name: this.fb.control(draft?.name || '', {
-        validators: [Validators.required, Validators.maxLength(100)]
-      }),
-      description: this.fb.control(draft?.description || '', {
-        validators: [Validators.required, Validators.maxLength(500)]
-      })
-    });
-
-    this.form.valueChanges.pipe(debounceTime(300)).subscribe(value => {
-      localStorage.setItem('todoDraft', JSON.stringify(value));
-    });
+  openAddDialog(event?: Event) {
+    if (event) event.preventDefault();
+    import('./todos-modern-dialog').then(m => {
+      const dialogRef = this.dialog.open(m.TodosModernDialogComponent as any);
+      dialogRef.afterClosed().subscribe((created: Todo | null) => {
+        if (created) this.todos_sig.update(list => [...list, created]);
+      });
+    }).catch(err => console.error('Failed to open add-todo dialog', err));
   }
 
   loadTodos(): void {
@@ -76,38 +65,7 @@ export class TodosModernComponent implements OnInit {
     this.expanded_sig.set(next);
   }
 
-  addTodo() {
-    if (this.form.invalid) return;
-
-    const { name, description } = this.form.value;
-    this.form.reset();
-    const tempId = Date.now();
-    const optimisticTodo: Todo = {
-      id: tempId,
-      name: name!,
-      description: description!,
-      completed: false,
-      createdAt: tempId.toString()
-    };
-
-    this.todos_sig.update(list => [...list, optimisticTodo]);
-
-    this.todosService.createTodo({ name: name!, description: description!, completed: false }).subscribe({
-      next: (newTodo: Todo) => {
-        this.todos_sig.update(list => list.map(t => t.id === tempId ? newTodo : t));
-        localStorage.removeItem('todoDraft');
-      },
-      error: (err) => {
-        console.error('Failed to create todo', err);
-        this.todos_sig.update(list => list.filter(t => t.id !== tempId));
-        const isBackendSleeping = err && (err.status === 0 || err.status === 503 || err.status === 504);
-        const message = isBackendSleeping
-          ? 'Failed to create todo. Is the backend sleeping maybe?'
-          : 'Failed to create todo';
-        this._snackBar.open(message, 'Close', { panelClass: ['snackbar-error'], duration: 10000 });
-      }
-    });
-  }
+  // no inline add; use dialog
 
   updateTodoCompleted(todo: Todo): void {
     this.todosService.updateTodoCompleted(todo.id, !todo.completed).subscribe({

@@ -2,51 +2,46 @@
   <main>
     <h2>Todos (modern)</h2>
 
+    <div class="add-container">
+      <button class="add-btn" (click)="openAddDialog($event)" (contextmenu)="openAddDialog($event)">+ Add Todo</button>
+    </div>
+
     @if (loading_sig()) {
     <div>Loading todos…</div>
     }
 
     @if (todos_sig().length > 0) {
-    <ul>
+    <div class="cards">
       @for (todo of todos_sig(); track $index) {
-      <li>
-        <div>
-          <button type="button" (click)="toggleDescription(todo.id); $event.stopPropagation()">
+      <article class="card">
+        <div class="card-row">
+          <button type="button" class="expand-btn" (click)="toggleDescription(todo.id); $event.stopPropagation()">
             {{ expanded_sig()[todo.id] ? '▾' : '▸' }}
           </button>
-          <span [style.text-decoration]="todo.completed ? 'line-through' : 'none'">{{ todo.name }}</span>
+          <div class="card-title" [style.text-decoration]="todo.completed ? 'line-through' : 'none'">{{ todo.name }}
+          </div>
         </div>
-        <div>
-          <input type="checkbox" (click)="updateTodoCompleted(todo); $event.stopPropagation()"
-            [checked]="todo.completed" />
-          <button type="button" (click)="deleteTodo(todo.id); $event.stopPropagation()">Delete</button>
-        </div>
+
         @if (expanded_sig()[todo.id]) {
-        <div>{{ todo.description }}</div>
+        <div class="card-desc">{{ todo.description }}</div>
         }
-      </li>
+
+        <div class="card-actions">
+          <label class="card-complete">
+            <input type="checkbox" (click)="updateTodoCompleted(todo); $event.stopPropagation()"
+              [checked]="todo.completed" />
+            Completed
+          </label>
+          <button type="button" class="delete-btn"
+            (click)="deleteTodo(todo.id); $event.stopPropagation()">Delete</button>
+        </div>
+      </article>
       }
-    </ul>
+    </div>
     } @else if (!loading_sig()) {
     <p>Your todo list is empty.</p>
     }
 
-    <form [formGroup]="form" (ngSubmit)="addTodo()">
-      <div>
-        <input formControlName="name" placeholder="Name" />
-        @if (form.controls.name.touched && form.controls.name.invalid) {
-        <div>Name is required.</div>
-        }
-      </div>
-      <div>
-        <textarea formControlName="description" placeholder="Description" rows="3"></textarea>
-        @if (form.controls.description.touched && form.controls.description.invalid) {
-        <div>Description is required.</div>
-        }
-      </div>
-      <div>
-        <button type="submit" [disabled]="form.invalid">Add Todo</button>
-      </div>
-    </form>
+    <!-- Add form moved to modal dialog -->
   </main>
 </div>
