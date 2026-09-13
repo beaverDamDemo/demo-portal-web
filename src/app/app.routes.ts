@@ -39,6 +39,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'todos-modern',
+    loadComponent: () => import('./pages/todos-modern/todos-modern').then((m) => m.TodosModernComponent),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFoundComponent),
   },

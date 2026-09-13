@@ -28,6 +28,10 @@
           [routerLinkActiveOptions]="{ exact: true }">
           Todos
         </button>
+        <button mat-stroked-button routerLink="/todos-modern" routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Todos (modern)
+        </button>
         <button mat-stroked-button routerLink="/profile" routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: true }">
           {{ authService.currentUserSig() }}'s Profile

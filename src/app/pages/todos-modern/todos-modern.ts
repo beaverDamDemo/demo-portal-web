@@ -1,17 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Signal } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ConfirmDeleteDialogComponent } from '../../components/confirm-delete-dialog/confirm-delete-dialog';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { TodosService } from '../../services/todos-service';
 import { Todo } from '../../interfaces/todo.interface';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatListModule } from '@angular/material/list';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 interface TodoForm {
   name: FormControl<string>;
@@ -19,32 +12,22 @@ interface TodoForm {
 }
 
 @Component({
-  selector: 'app-todos-component',
-  imports: [
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-  ],
-  templateUrl: './todos-component.html',
-  styleUrl: './todos-component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-todos-modern',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule],
+  templateUrl: './todos-modern.html',
+  styleUrl: './todos-modern.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TodosComponent implements OnInit {
+export class TodosModernComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private todosService = inject(TodosService);
+  private _snackBar = inject(MatSnackBar);
+
   form!: FormGroup<TodoForm>;
   todos_sig = signal<Todo[]>([]);
   loading_sig = signal<boolean>(true);
   expanded_sig = signal<Record<number, boolean>>({});
-  private _snackBar = inject(MatSnackBar);
-  private dialog = inject(MatDialog);
-
-  constructor(private todosService: TodosService) { }
 
   ngOnInit(): void {
     this.loadTodos();
@@ -76,15 +59,12 @@ export class TodosComponent implements OnInit {
       },
       error: (err) => {
         this.loading_sig.set(false);
-        console.error('Failed to load todos', err);
+        console.error('Failed to load todos (modern)', err);
         const isBackendSleeping = err && (err.status === 0 || err.status === 503 || err.status === 504);
         const message = isBackendSleeping
           ? 'Failed to load todos. Is the backend sleeping maybe?'
           : 'Failed to load todos';
-        this._snackBar.open(message, 'Close', {
-          panelClass: ['snackbar-error'],
-          duration: 12500
-        });
+        this._snackBar.open(message, 'Close', { panelClass: ['snackbar-error'], duration: 10000 });
       }
     });
   }
@@ -101,7 +81,6 @@ export class TodosComponent implements OnInit {
 
     const { name, description } = this.form.value;
     this.form.reset();
-    // Create a temporary optimistic todo
     const tempId = Date.now();
     const optimisticTodo: Todo = {
       id: tempId,
@@ -113,25 +92,19 @@ export class TodosComponent implements OnInit {
 
     this.todos_sig.update(list => [...list, optimisticTodo]);
 
-    /**
-    // Fire the request
-    // Replace the optimistic todo with the real one from backend
-    // On error, Roll back optimistic update
-     */
-    this.todosService.createTodo({
-      name: name!,
-      description: description!,
-      completed: false
-    }).subscribe({
+    this.todosService.createTodo({ name: name!, description: description!, completed: false }).subscribe({
       next: (newTodo: Todo) => {
-        this.todos_sig.update(list =>
-          list.map(t => t.id === tempId ? newTodo : t)
-        );
+        this.todos_sig.update(list => list.map(t => t.id === tempId ? newTodo : t));
         localStorage.removeItem('todoDraft');
       },
       error: (err) => {
         console.error('Failed to create todo', err);
         this.todos_sig.update(list => list.filter(t => t.id !== tempId));
+        const isBackendSleeping = err && (err.status === 0 || err.status === 503 || err.status === 504);
+        const message = isBackendSleeping
+          ? 'Failed to create todo. Is the backend sleeping maybe?'
+          : 'Failed to create todo';
+        this._snackBar.open(message, 'Close', { panelClass: ['snackbar-error'], duration: 10000 });
       }
     });
   }
@@ -148,17 +121,13 @@ export class TodosComponent implements OnInit {
 
   deleteTodo(id: number): void {
     const todo = this.todos_sig().find(t => t.id === id);
-    this.dialog.open(ConfirmDeleteDialogComponent, {
-      data: { itemName: todo?.name || 'this todo' },
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.todosService.deleteTodo(id).subscribe({
-          next: () => {
-            this.todos_sig.update(list => list.filter(t => t.id != id));
-          },
-          error: (err) => console.error('Failed to delete todo', err)
-        });
-      }
+    const confirm = window.confirm(`Delete "${todo?.name || 'this todo'}"?`);
+    if (!confirm) return;
+    this.todosService.deleteTodo(id).subscribe({
+      next: () => {
+        this.todos_sig.update(list => list.filter(t => t.id != id));
+      },
+      error: (err) => console.error('Failed to delete todo', err)
     });
   }
 }

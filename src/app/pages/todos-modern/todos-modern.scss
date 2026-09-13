@@ -1,0 +1,33 @@
+.todos-modern-root {
+  color: #000;
+  background: #fff;
+  padding: 16px;
+}
+
+.todos-modern-root h2 {
+  margin: 0 0 12px 0;
+}
+
+.todos-modern-root ul {
+  list-style: none;
+  padding: 0;
+}
+
+.todos-modern-root li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.todos-modern-root button {
+  background: transparent;
+  border: 1px solid #000;
+  color: #000;
+  padding: 4px 8px;
+}
+
+.todos-modern-root input,
+.todos-modern-root textarea {
+  border: 1px solid #000;
+  color: #000;
+  padding: 6px;
+}
