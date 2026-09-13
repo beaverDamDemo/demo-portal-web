@@ -5,6 +5,6 @@ export const environment = {
     AVIATION_STACK_API_KEY: '4961ede6b8ed9d3994f2fa970b8c2310',
     API_URL: 'http://localhost:3000/demo-portal',
     appVersion: '0.0.1',
-    buildDate: 'Sep 13, 2026, 14:32',
+    buildDate: 'Sep 13, 2026, 16:11',
     production: false,
   };
