@@ -38,13 +38,13 @@ npm run start:dev
 
 ## Building
 
-"build":
+build on Linux:
 
 ```
 npm run prestart:build && ng build --configuration=production
 ```
 
-or
+or build on Windows:
 
 ```
 npm run prestart:build
@@ -54,13 +54,14 @@ npm run prestart:build
 ng build --configuration=production
 ```
 
+then continue
 "github-build":
 
 ```
 ng build --configuration production --base-href '/demo-portal-web/'
 ```
 
-"github-deploy":
+continue "github-deploy":
 
 ```
 npx angular-cli-ghpages --dir=dist/demo-portal-web/browser --no-silent
