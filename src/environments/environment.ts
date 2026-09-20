@@ -5,6 +5,6 @@ export const environment = {
     AVIATION_STACK_API_KEY: '4961ede6b8ed9d3994f2fa970b8c2310',
     API_URL: 'https://beaver-dam-demo-app-hub-api.onrender.com',
     appVersion: '0.0.1',
-    buildDate: 'Sep 20, 2026, 11:40',
+    buildDate: 'Sep 20, 2026, 12:00',
     production: true,
   };

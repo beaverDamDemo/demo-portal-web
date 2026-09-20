@@ -8,20 +8,6 @@ This project expects the following backend API endpoints:
 - `POST   /demo-portal/auth/register` — register
 - `GET    /demo-portal/auth/profile` — get current user profile
 
-### Cars endpoints (`/demo-portal/cars`)
-
-- `GET    /demo-portal/cars` — get all cars
-- `GET    /demo-portal/cars/{id}` — get car by ID
-- `POST   /demo-portal/cars` — create a car
-- `PUT    /demo-portal/cars/{id}` — update a car
-- `DELETE /demo-portal/cars/{id}` — delete a car
-- `GET    /demo-portal/cars/price?minPrice=&maxPrice=` — filter cars by price
-- `GET    /demo-portal/cars/brand?brand=` — filter cars by brand
-- `GET    /demo-portal/cars/power?powerPs=` — filter cars by power
-- `GET    /demo-portal/cars/drive?wheelDrive=` — filter cars by wheel drive
-- `GET    /demo-portal/cars/number_seats?n=` — filter cars by minimum number of seats
-- `GET    /demo-portal/cars/filter?brand=&fuel=&minPrice=&maxPrice=` — filter by multiple criteria
-
 ### Todos endpoints (`/demo-portal/todos`)
 
 - `GET    /demo-portal/todos` — get all todos
@@ -52,16 +38,32 @@ npm run start:dev
 
 ## Building
 
+"build":
+
 ```
-"build": "npm run prestart:build && ng build --configuration=production",
+npm run prestart:build && ng build --configuration=production
+```
+
+or
+
+```
+npm run prestart:build
 ```
 
 ```
-"github-build": "ng build --configuration production --base-href '/demo-portal-web/'",
+ng build --configuration=production
 ```
 
+"github-build":
+
 ```
-"github-deploy": "npx angular-cli-ghpages --dir=dist/demo-portal-web/browser --no-silent",
+ng build --configuration production --base-href '/demo-portal-web/'
+```
+
+"github-deploy":
+
+```
+npx angular-cli-ghpages --dir=dist/demo-portal-web/browser --no-silent
 ```
 
 ## if I run github-build and github-deploy it doesn't work
